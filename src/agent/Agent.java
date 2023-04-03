@@ -8,6 +8,8 @@ import java.util.List;
  * then execute their developmental strategy by incrementally making changes to their
  * phenotype.
  * 
+ * This implementation uses the NKPhenotype for use on NK landscapes.
+ * 
  * @author Jacob Ashworth
  *
  */
@@ -17,5 +19,7 @@ public class Agent {
 	private List<List<Step>> blocks;
 	
 	//Fields related to phenotype
+	private Phenotype phenotype = new NKPhenotype();
 	
+	//	
 }
