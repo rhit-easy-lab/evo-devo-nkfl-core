@@ -18,7 +18,7 @@ import landscape.FitnessFunction;
  * @author Jacob Ashworth
  *
  */
-public class Agent {
+public class Agent implements Comparable<Agent> {
 	//Fields related to evolutionary past
 	private Agent parent = null;
 	
@@ -284,6 +284,25 @@ public class Agent {
 		//Refresh these values since they may have changed
 		this.compileStrategy();
 		this.fitness = fitnessFunction.getFitness(phenotype);
+	}
+	
+	/**
+	 * Compares fitness for sorting
+	 */
+	@Override
+	public int compareTo(Agent other) {
+		if(this.fitness > other.fitness)
+		{
+			return 1;
+		}
+		else if(this.fitness == other.fitness)
+		{
+			return 0;
+		}
+		else
+		{
+			return -1;
+		}
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------

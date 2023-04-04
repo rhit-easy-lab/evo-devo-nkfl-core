@@ -11,6 +11,7 @@ public class Constants {
 	public static final int K = Integer.parseInt(PropParser.getProperty("K"));
 	
 //	Evolution Constants
+	public static final int GENERATION_SIZE = Integer.parseInt(PropParser.getProperty("generationSize"));
 	public static final double PHENOTYPE_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("phenotypeMutationRate"));
 	public static final double BLOCK_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("blockMutationRate"));
 	public static final double PROGRAM_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("programMutationRate"));
