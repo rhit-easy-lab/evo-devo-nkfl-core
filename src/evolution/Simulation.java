@@ -51,8 +51,14 @@ public class Simulation {
 	
 	public void runSimulation()
 	{
-		for(int generationNumber = 0; generationNumber < Constants.NUM_GENERATIONS; generationNumber++)
+		for(int generationNumber = 1; generationNumber < Constants.NUM_GENERATIONS+1; generationNumber++)
 		{
+			//if enough generations have passed, invoke the fitness function's dynamic behavior
+			if(Constants.GENERATIONS_PER_CYCLE % Constants.GENERATIONS_PER_CYCLE == 0)
+			{
+				fitFunction.changeCycle();
+			}
+			//make and run the next generation
 			Generation nextGeneration = selectionStrategy.getNextGeneration(generations.get(generations.size()-1));
 			nextGeneration.executeAllStrategies();
 			generations.add(nextGeneration);

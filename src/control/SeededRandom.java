@@ -8,7 +8,11 @@ public class SeededRandom extends Random {
 	
 	private SeededRandom(long seed)
 	{
-		this.setSeed(seed);
+		//If the seed is -1, that means we want a random seed
+		if(seed != -1)
+		{			
+			this.setSeed(seed);
+		}
 	}
 	
 	public static SeededRandom getInstance() {

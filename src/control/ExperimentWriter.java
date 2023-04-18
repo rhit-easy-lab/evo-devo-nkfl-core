@@ -186,4 +186,8 @@ public class ExperimentWriter {
 		out = '"'+out+"\",";
 		return out;
 	}
+	
+	public void closePrintWriter() {
+		out.close();
+	}
 }

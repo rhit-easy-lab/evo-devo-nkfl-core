@@ -1,5 +1,9 @@
 package control;
 
+import java.io.IOException;
+
+import evolution.Simulation;
+
 /**
  * This class exists to house the main method of the simulator,
  * as well as handling connection to parts external to the simulator,
@@ -10,7 +14,7 @@ package control;
  */
 public class ExperimentRunner {
 	
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
 		//The first argument passed into ExperimentRunner is the configuration file.
 		//If no configuration file is specified, it runs using defaultConfig.properties
@@ -24,5 +28,25 @@ public class ExperimentRunner {
 			PropParser.load(PropParser.defaultFilename);
 		}
 		
+		//Set up the .csv writer
+		ExperimentWriter writer = new ExperimentWriter(Constants.FILENAME);
+		
+		System.out.println("Writing to csv file " + ExperimentWriter.rename(Constants.FILENAME));
+		//Run all of our experiments, and write them to the file as we go
+		long startTime = System.currentTimeMillis()/1000;
+		for(int simulationNum=0; simulationNum<Constants.SAMPLE_SIZE; simulationNum++)
+		{
+			Simulation sim = new Simulation();
+			sim.runSimulation();
+			writer.writeSim(sim, Constants.GENERATION_SPACING, Constants.REQUIRE_LAST_GENERATION);
+			
+			long endTime = System.currentTimeMillis()/1000;
+			long estimatedRemainingTime = (endTime-startTime)/(simulationNum+1)*(Constants.SAMPLE_SIZE-simulationNum-1);
+			System.out.println("Simulation " + simulationNum + " of " + Constants.SAMPLE_SIZE + " complete, estimated minutes remaining:" + Math.round(100*estimatedRemainingTime/60)/100);
+		}
+		
+		//finish up
+		writer.closePrintWriter();
+		System.out.println("Completed, experiment written to " + ExperimentWriter.rename(Constants.FILENAME));
 	}
 }

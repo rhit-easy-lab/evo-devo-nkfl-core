@@ -8,9 +8,15 @@ public class Constants {
 	public static final String FITNESS_FUNCTION_TYPE = PropParser.getProperty("fitnessFunction");
 	public static final String PHENOTYPE_TYPE = PropParser.getProperty("phenotypeType");
 	
+//	CSV Output Constants	
+	public static final String FILENAME = PropParser.getProperty("filename");
+	public static final int GENERATION_SPACING = Integer.parseInt(PropParser.getProperty("generationSpacing"));
+	public static final Boolean REQUIRE_LAST_GENERATION = Boolean.parseBoolean(PropParser.getProperty("requireLastGeneration"));
+	
 //	NK Landscape Constants
 	public static final int N = Integer.parseInt(PropParser.getProperty("N"));
 	public static final int K = Integer.parseInt(PropParser.getProperty("K"));
+	public static final int GENERATIONS_PER_CYCLE = Integer.parseInt(PropParser.getProperty("generationsPerCycle"));
 	
 //	Evolution Constants
 	public static final int NUM_GENERATIONS = Integer.parseInt(PropParser.getProperty("numGenerations"));
