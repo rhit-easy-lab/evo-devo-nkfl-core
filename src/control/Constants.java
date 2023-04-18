@@ -17,6 +17,7 @@ public class Constants {
 	public static final int N = Integer.parseInt(PropParser.getProperty("N"));
 	public static final int K = Integer.parseInt(PropParser.getProperty("K"));
 	public static final int GENERATIONS_PER_CYCLE = Integer.parseInt(PropParser.getProperty("generationsPerCycle"));
+	public static final Boolean SINGLE_START = Boolean.parseBoolean(PropParser.getProperty("singleStart"));
 	
 //	Evolution Constants
 	public static final int NUM_GENERATIONS = Integer.parseInt(PropParser.getProperty("numGenerations"));

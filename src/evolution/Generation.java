@@ -5,12 +5,13 @@ import java.util.Collections;
 import java.util.List;
 
 import agent.Agent;
+import agent.Phenotype;
 import control.Constants;
 import landscape.FitnessFunction;
 
 /**
  * The Generation class is primarily just a set of utility functions
- * built around a list of agents. It represnets a single generation of
+ * built around a list of agents. It represents a single generation of
  * agents in the simulation.
  * 
  * @author Jacob Ashworth
@@ -27,9 +28,20 @@ public class Generation {
 	public Generation(FitnessFunction f)
 	{
 		agents = new ArrayList<Agent>();
-		for(int agent=0; agent<Constants.GENERATION_SIZE; agent++)
+		if(Constants.SINGLE_START)
 		{
-			agents.add(new Agent(f));
+			Phenotype p = Agent.getRandomPhenotype();
+			for(int agent=0; agent<Constants.GENERATION_SIZE; agent++)
+			{
+				agents.add(new Agent(f,p));
+			}
+		}
+		else
+		{
+			for(int agent=0; agent<Constants.GENERATION_SIZE; agent++)
+			{
+				agents.add(new Agent(f));
+			}
 		}
 	}
 	
@@ -73,3 +85,4 @@ public class Generation {
 		return agents.get(0);
 	}
 }
+ 

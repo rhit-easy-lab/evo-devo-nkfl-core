@@ -54,15 +54,7 @@ public class Agent implements Comparable<Agent> {
 	public Agent(FitnessFunction fitnessFunction)
 	{
 		//Switch statement to control which phenotype type is initialized
-		switch(Constants.PHENOTYPE_TYPE.toLowerCase()) {
-			case "nkphenotype":
-				this.phenotype = new NKPhenotype();
-				break;
-			default:
-				System.out.println("PHENOTYPE_TYPE not recognized");
-				this.phenotype = null;
-		}
-		
+		this.phenotype = Agent.getRandomPhenotype();
 		this.fitnessFunction = fitnessFunction;
 		this.fitness = fitnessFunction.getFitness(phenotype); 
 		
@@ -88,6 +80,22 @@ public class Agent implements Comparable<Agent> {
 	}
 	
 	/**
+	 * Constructor for Agent. Creates an agent with a given initial phenotype,
+	 * program, and blocks.
+	 * 
+	 * @param fitnessFunction FitnessFunction for the agent to operate on
+	 */
+	public Agent(FitnessFunction fitnessFunction, Phenotype p)
+	{
+		this(fitnessFunction);
+		
+		//Set our phenotype to the given one. Make a copy so we don't have a ton of agents linked to the same phenotype
+		this.phenotype = p.getIdenticalCopy();
+		this.fitnessFunction = fitnessFunction;
+		this.fitness = fitnessFunction.getFitness(phenotype); 
+	}
+	
+	/**
 	 * Constructor used to exactly specify an agent, with all relevant fields. 
 	 * Mostly called by the identicalChild() function.
 	 */
@@ -101,6 +109,16 @@ public class Agent implements Comparable<Agent> {
 		this.parent = parent;
 		//Compile the program and blocks into the strategy
 		this.compileStrategy();
+	}
+	
+	public static Phenotype getRandomPhenotype() {
+		switch(Constants.PHENOTYPE_TYPE.toLowerCase()) {
+			case "nkphenotype":
+				return new NKPhenotype();
+			default:
+				System.out.println("PHENOTYPE_TYPE not recognized");
+				return null;
+		}
 	}
 	
 	/**
