@@ -55,7 +55,7 @@ public class Agent implements Comparable<Agent> {
 	{
 		//Switch statement to control which phenotype type is initialized
 		switch(Constants.PHENOTYPE_TYPE.toLowerCase()) {
-			case "nklandscape":
+			case "nkphenotype":
 				this.phenotype = new NKPhenotype();
 				break;
 			default:

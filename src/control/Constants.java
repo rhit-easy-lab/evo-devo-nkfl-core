@@ -5,7 +5,7 @@ public class Constants {
 	public static final int SEED = Integer.parseInt(PropParser.getProperty("seed"));
 	public static final int SAMPLE_SIZE = Integer.parseInt(PropParser.getProperty("sampleSize"));
 	public static final int STRATEGY_SAMPLE_SIZE = Integer.parseInt(PropParser.getProperty("strategyExecutionSampleSize"));
-	public static final String FITNESS_FUNCTION_TYPE = PropParser.getProperty("fitnessFunction");
+	public static final String FITNESS_FUNCTION_TYPE = PropParser.getProperty("fitnessFunctionType");
 	public static final String PHENOTYPE_TYPE = PropParser.getProperty("phenotypeType");
 	
 //	CSV Output Constants	

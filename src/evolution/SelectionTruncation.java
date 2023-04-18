@@ -26,7 +26,7 @@ public class SelectionTruncation implements SelectionStrategy {
 		List<Agent> children = new ArrayList<Agent>();
 		
 		//top half survive
-		for(int survivor=0; survivor<survivors; survivors++)
+		for(int survivor=0; survivor<survivors; survivor++)
 		{
 			Agent copy = parents.get(survivor).identicalChild();
 			children.add(copy);
@@ -40,7 +40,7 @@ public class SelectionTruncation implements SelectionStrategy {
 		}
 		
 		//now we make mutated children of all survivors, then return it as a generation
-		for(int survivor=0; survivor<survivors; survivors++)
+		for(int survivor=0; survivor<survivors; survivor++)
 		{
 			Agent child = parents.get(survivor).identicalChild();
 			child.mutate();

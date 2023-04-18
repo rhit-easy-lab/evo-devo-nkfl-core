@@ -1,6 +1,7 @@
 package evolution;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import control.Constants;
 import control.SeededRandom;
@@ -66,7 +67,12 @@ public class Simulation {
 	}
 	
 	public Generation[] getGenerations() {
-		return (Generation[]) generations.toArray();
+		Generation[] genList = new Generation[generations.size()];
+		for(int i=0; i<generations.size(); i++)
+		{
+			genList[i]=generations.get(i);
+		}
+		return genList;
 	}
 
 }

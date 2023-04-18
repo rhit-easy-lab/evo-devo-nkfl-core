@@ -42,7 +42,7 @@ public class ExperimentRunner {
 			
 			long endTime = System.currentTimeMillis()/1000;
 			long estimatedRemainingTime = (endTime-startTime)/(simulationNum+1)*(Constants.SAMPLE_SIZE-simulationNum-1);
-			System.out.println("Simulation " + simulationNum + " of " + Constants.SAMPLE_SIZE + " complete, estimated minutes remaining:" + Math.round(100*estimatedRemainingTime/60)/100);
+			System.out.println("Simulation " + simulationNum+1 + " of " + Constants.SAMPLE_SIZE + " complete, estimated minutes remaining: " + Math.round(100.0*estimatedRemainingTime/60.0)/100.0);
 		}
 		
 		//finish up
