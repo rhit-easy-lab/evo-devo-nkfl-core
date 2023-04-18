@@ -21,4 +21,6 @@ public interface FitnessFunction {
 	
 	//Runs a change cycle of the landscape. On static fitness functions this does nothing.
 	public void changeCycle();
+
+	public String toString();
 }

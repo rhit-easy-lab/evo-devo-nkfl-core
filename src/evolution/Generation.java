@@ -60,4 +60,19 @@ public class Generation {
 		Collections.sort(agents);
 		Collections.reverse(agents);
 	}
+
+	public FitnessFunction getFunction() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Agent getBest() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public int size() {
+		// TODO Auto-generated method stub
+		return -1;
+	}
 }

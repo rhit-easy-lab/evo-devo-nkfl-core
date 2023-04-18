@@ -357,4 +357,20 @@ public class Agent implements Comparable<Agent> {
 		phenotype = worstNeighbor;
 	}
 	//-------------------------------------------------------------------------------------------------------------------
+
+	
+	public List<List<Step>> getBlocks() {
+		// TODO Auto-generated method stub
+		return blocks;
+	}
+
+	public List<Integer> getProgram() {
+		// TODO Auto-generated method stub
+		return program;
+	}
+
+	public List<Double> getFitnessHistory() {
+		// TODO Auto-generated method stub
+		return fitnessHistory;
+	}
 }
