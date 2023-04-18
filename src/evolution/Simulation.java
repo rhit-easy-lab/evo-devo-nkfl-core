@@ -7,6 +7,7 @@ import control.Constants;
 import control.SeededRandom;
 import landscape.FitnessFunction;
 import landscape.NKLandscape;
+import landscape.NumOnes;
 
 /**
  * Represents a single evolutionary simulation on a single landscape.
@@ -29,6 +30,9 @@ public class Simulation {
 		switch(Constants.FITNESS_FUNCTION_TYPE.toLowerCase()) {
 			case "nklandscape":
 				this.fitFunction = new NKLandscape(SeededRandom.getInstance().nextInt());
+				break;
+			case "numones":
+				this.fitFunction = new NumOnes();
 				break;
 			default:
 				System.out.println("FITNESS_FUNCTION_TYPE not recognized");

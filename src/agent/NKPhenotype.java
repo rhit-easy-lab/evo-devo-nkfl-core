@@ -100,4 +100,7 @@ public class NKPhenotype extends Phenotype {
 		return tableIndex;
 	}
 	
+	public int[] getBitstring() {
+		return bitstring;
+	}
 }
