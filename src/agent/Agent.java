@@ -6,6 +6,7 @@ import java.util.List;
 import control.Constants;
 import control.SeededRandom;
 import landscape.FitnessFunction;
+import landscape.NKLandscape;
 
 /**
  * The Agent class represents the agents that navigate the landscape. They use
@@ -52,7 +53,16 @@ public class Agent implements Comparable<Agent> {
 	 */
 	public Agent(FitnessFunction fitnessFunction)
 	{
-		this.phenotype = new NKPhenotype();
+		//Switch statement to control which phenotype type is initialized
+		switch(Constants.PHENOTYPE_TYPE.toLowerCase()) {
+			case "nklandscape":
+				this.phenotype = new NKPhenotype();
+				break;
+			default:
+				System.out.println("PHENOTYPE_TYPE not recognized");
+				this.phenotype = null;
+		}
+		
 		this.fitnessFunction = fitnessFunction;
 		this.fitness = fitnessFunction.getFitness(phenotype); 
 		

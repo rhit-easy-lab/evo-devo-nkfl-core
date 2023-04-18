@@ -129,10 +129,10 @@ public class ExperimentWriter {
 		line.append(toCSVDelimited(genIndex));
 		
 		// Generation Size
-		line.append(gen.size()+",");
+		line.append(Constants.GENERATION_SIZE+",");
 		
 		// Function
-		line.append(toCSVDelimited(gen.getFunction().toString())); //it may make more sense to pass in the landscape IDK 
+		line.append(toCSVDelimited(Constants.FITNESS_FUNCTION_TYPE)); //it may make more sense to pass in the landscape IDK 
 		
 		// Block of Best
 		Agent best = gen.getBest();

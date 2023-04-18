@@ -51,6 +51,13 @@ public class Generation {
 		{
 			a.executeStrategy();
 		}
+		//sort at the end
+		this.sortAgents();
+	}
+	
+	public List<Agent> getAgents()
+	{
+		return agents;
 	}
 	
 	//Since the best agent is accessed far more frequently than the worst, a sorted
@@ -61,18 +68,8 @@ public class Generation {
 		Collections.reverse(agents);
 	}
 
-	public FitnessFunction getFunction() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Agent getBest() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int size() {
-		// TODO Auto-generated method stub
-		return -1;
+		this.sortAgents();
+		return agents.get(0);
 	}
 }
