@@ -25,7 +25,7 @@ class AgentTest {
 	
 	private void init()
 	{
-		PropParser.load("src/test/testConfig.properties");
+		PropParser.load("src/test/testConfigAgent.properties");
 	}
 	
 	/**
@@ -142,7 +142,7 @@ class AgentTest {
 	 * 
 	 */
 	@Test
-	void testIdenticalChildDecoupledAndMutates()
+	void IdenticalChildDecoupledAndMutates()
 	{
 		init();
 		TestClass_DeterministicNextDouble dnd = new TestClass_DeterministicNextDouble(0);
