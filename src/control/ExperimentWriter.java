@@ -160,11 +160,15 @@ public class ExperimentWriter {
 		
 		// Fitness of Best
 		sb = new StringBuilder();
-		sb.append('"');
-		for(Double fit : best.getFitnessHistory()) {
-			sb.append(fit);
-			sb.append(",");
-		}
+		//--------debugging------------
+//		sb.append('"');
+//		for(Double fit : best.getFitnessHistory()) {
+//			sb.append(fit);
+//			sb.append(",");
+//		}
+		sb.append(best.getFinalFitness());
+		sb.append(",");
+		//----------------------------
 		sb.deleteCharAt(sb.length()-1); // remove extra comma
 		line.append(toCSVDelimited(sb.toString()));
 		

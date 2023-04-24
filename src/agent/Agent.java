@@ -37,13 +37,13 @@ public class Agent implements Comparable<Agent> {
 	private Phenotype phenotype;
 	/* phenotypeHistory is indexed by step number, so phenotypeHistory.get(4)
 	 * would give you the phenotype immediately before step 4 was executed */
-	private List<Phenotype> phenotypeHistory = new ArrayList<Phenotype>();
+	private List<Phenotype> phenotypeHistory;
 	
 	//Fields related to fitness
 	private FitnessFunction fitnessFunction;
-	public double fitness;
+	private double fitness;
 	//fitnessHistory is indexed the same as phenotypeHistory
-	private List<Double> fitnessHistory = new ArrayList<Double>();
+	private List<Double> fitnessHistory;
 	
 	/**
 	 * Default constructor for Agent. Creates an agent with a random initial phenotype,
@@ -76,7 +76,7 @@ public class Agent implements Comparable<Agent> {
 			blocks.add(thisBlock);
 		}
 		//Compile the program and blocks into the strategy
-		this.compileStrategy();
+		this.compileStrategyAndInitializeHistory();
 	}
 	
 	/**
@@ -91,8 +91,7 @@ public class Agent implements Comparable<Agent> {
 		
 		//Set our phenotype to the given one. Make a copy so we don't have a ton of agents linked to the same phenotype
 		this.phenotype = p.getIdenticalCopy();
-		this.fitnessFunction = fitnessFunction;
-		this.fitness = fitnessFunction.getFitness(phenotype); 
+		this.compileStrategyAndInitializeHistory();
 	}
 	
 	/**
@@ -108,7 +107,7 @@ public class Agent implements Comparable<Agent> {
 		this.blocks = blocks;
 		this.parent = parent;
 		//Compile the program and blocks into the strategy
-		this.compileStrategy();
+		this.compileStrategyAndInitializeHistory();
 	}
 	
 	public static Phenotype getRandomPhenotype() {
@@ -126,7 +125,7 @@ public class Agent implements Comparable<Agent> {
 	 * the blocks by concatenating copies of the blocks specified in the order
 	 * of the program
 	 */
-	private void compileStrategy()
+	private void compileStrategyAndInitializeHistory()
 	{
 		strategy = new ArrayList<Step>();
 		for(Integer blockIndex : program)
@@ -134,6 +133,12 @@ public class Agent implements Comparable<Agent> {
 			List<Step> block = blocks.get(blockIndex);
 			strategy.addAll(block);
 		}
+		
+		this.phenotypeHistory = new ArrayList<Phenotype>();
+		this.phenotypeHistory.add(phenotype);
+		this.fitnessHistory = new ArrayList<Double>();
+		this.fitness = fitnessFunction.getFitness(phenotype); 
+		this.fitnessHistory.add(fitness);
 	}
 	
 	/**
@@ -187,8 +192,6 @@ public class Agent implements Comparable<Agent> {
 	 */
 	public void executeStrategy()
 	{
-		this.phenotypeHistory.add(phenotype);
-		this.fitnessHistory.add(fitness);
 		
 		if(Constants.STRATEGY_SAMPLE_SIZE == 1)
 		{
@@ -282,9 +285,13 @@ public class Agent implements Comparable<Agent> {
 		{
 			if(SeededRandom.getInstance().nextDouble() < Constants.PROGRAM_MUTATION_RATE)
 			{
-				//Convinent way to use % operator to ensure we don't randomly roll the same block
-				int programChangeAmount = SeededRandom.getInstance().nextInt(Constants.NUMBER_OF_BLOCKS-1);
-				program.set(programIndex, (program.get(programIndex) + programChangeAmount) % Constants.NUMBER_OF_BLOCKS);
+				//Ensure we don't roll the same block again
+				int newBlock = SeededRandom.getInstance().nextInt(Constants.NUMBER_OF_BLOCKS);
+				if(newBlock >= program.get(programIndex))
+				{
+					newBlock = (newBlock + 1) % Constants.NUMBER_OF_BLOCKS;
+				}
+				program.set(programIndex, newBlock);
 			}
 		}
 		//block mutation
@@ -310,8 +317,7 @@ public class Agent implements Comparable<Agent> {
 		}
 		
 		//Refresh these values since they may have changed
-		this.compileStrategy();
-		this.fitness = fitnessFunction.getFitness(phenotype);
+		this.compileStrategyAndInitializeHistory();
 	}
 	
 	/**
@@ -388,17 +394,54 @@ public class Agent implements Comparable<Agent> {
 
 	
 	public List<List<Step>> getBlocks() {
-		// TODO Auto-generated method stub
 		return blocks;
 	}
 
 	public List<Integer> getProgram() {
-		// TODO Auto-generated method stub
 		return program;
 	}
 
 	public List<Double> getFitnessHistory() {
-		// TODO Auto-generated method stub
 		return fitnessHistory;
+	}
+	
+	public List<Step> getStrategy() {
+		return strategy;
+	}
+	
+	public List<Phenotype> getPhenotypeHistory(){
+		return phenotypeHistory;
+	}
+	
+	/**
+	 * Returns the fitness of the agent if it is developed, otherwise it prints an error and returns -1.
+	 * @return
+	 */
+	public double getFinalFitness() {
+		if(agentDeveloped())
+		{
+			return fitness;
+		}
+		else
+		{
+			System.out.println("getFinalFitness called on undeveloped agent");
+			return -1;
+		}
+	}
+	
+	/**
+	 * Returns the phenotype of the agent if it is developed, otherwise it prints an error and returns null.
+	 * @return
+	 */
+	public Phenotype getFinalPhenotype() {
+		if(agentDeveloped())
+		{
+			return phenotype;
+		}
+		else
+		{
+			System.out.println("getFinalFitness called on undeveloped agent");
+			return null;
+		}
 	}
 }

@@ -87,7 +87,13 @@ public class NKPhenotype extends Phenotype {
 	}
 	
 	//Method to turn the bitstring into a index, usable by the NKLandscape.
-	//See the lessons on NK landscapes for a more thorough description
+	/**
+	 * Returns the bitstring as a single integer, representing its location in the array used by NKLandscape.
+	 * 
+	 * The first index is the highest power of 2, and the final index is the lowest power of 2, so the
+	 * bitstring [0,1,0,1] on an N=4 landscape returns 0*2^3+1*2^2+0*2^1+1*2^0 = 2^2+2^0 = 5
+	 * @return
+	 */
 	public int getNKTableIndex() {
 		int tableIndex = 0;
 		for(int bit=0; bit<bitstring.length; bit++)
@@ -102,5 +108,23 @@ public class NKPhenotype extends Phenotype {
 	
 	public int[] getBitstring() {
 		return bitstring;
+	}
+	
+	/**
+	 * Returns the distance (as an integer) to another NKPhenotype. Used in testing and hamming distance calculations
+	 * @param other
+	 * @return
+	 */
+	public int getDistance(NKPhenotype other)
+	{
+		int dist = 0;
+		for(int index=0; index<bitstring.length; index++)
+		{
+			if(other.getBitstring()[index]!=bitstring[index])
+			{
+				dist += 1;
+			}
+		}
+		return dist;
 	}
 }
