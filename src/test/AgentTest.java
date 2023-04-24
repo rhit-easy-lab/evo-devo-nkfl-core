@@ -25,7 +25,7 @@ class AgentTest {
 	
 	private void init()
 	{
-		PropParser.load("src/test/testConfigAgent.properties");
+		PropParser.load("src/test/testConfig.properties");
 	}
 	
 	/**
@@ -97,7 +97,7 @@ class AgentTest {
 		
 		NKPhenotype testPhenotype3 = new NKPhenotype(bitstr3);
 		assertEquals(0, testPhenotype3.getNKTableIndex());
-	}
+	} 
 
 	/**
 	 * Initializes a simple agent that just needs to climb 3 times
