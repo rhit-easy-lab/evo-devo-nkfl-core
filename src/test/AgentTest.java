@@ -86,12 +86,12 @@ class AgentTest {
 		int[] bitstr = {0, 1, 0, 1};
 		
 		NKPhenotype testPhenotype = new NKPhenotype(bitstr);
-		assertEquals(Math.pow(2, 2)+Math.pow(2, 0), testPhenotype.getNKTableIndex());
+		assertEquals(Math.pow(2, 1)+Math.pow(2, 3), testPhenotype.getNKTableIndex());
 		
 		int[] bitstr2 = {1, 1, 1, 0};
 		
 		NKPhenotype testPhenotype2 = new NKPhenotype(bitstr2);
-		assertEquals(Math.pow(2, 3)+Math.pow(2,2)+Math.pow(2, 1), testPhenotype2.getNKTableIndex());
+		assertEquals(Math.pow(2, 0)+Math.pow(2,1)+Math.pow(2, 2), testPhenotype2.getNKTableIndex());
 		
 		int[] bitstr3 = {0, 0, 0, 0};
 		

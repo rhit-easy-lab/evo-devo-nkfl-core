@@ -98,8 +98,8 @@ public class NKPhenotype extends Phenotype {
 	/**
 	 * Returns the bitstring as a single integer, representing its location in the array used by NKLandscape.
 	 * 
-	 * The first index is the highest power of 2, and the final index is the lowest power of 2, so the
-	 * bitstring [0,1,0,1] on an N=4 landscape returns 0*2^3+1*2^2+0*2^1+1*2^0 = 2^2+2^0 = 5
+	 * The first index is the lowest power of 2, and the final index is the highest power of 2, so the
+	 * bitstring [0,1,0,1] on an N=4 landscape returns 0*2^0+1*2^1+0*2^2+1*2^3 = 2^1+2^3 = 9
 	 * @return
 	 */
 	public int getNKTableIndex() {
@@ -108,7 +108,7 @@ public class NKPhenotype extends Phenotype {
 		{
 			if(bitstring[bit]==1)
 			{
-				tableIndex += Math.pow(2, Constants.N-bit-1);
+				tableIndex += Math.pow(2, bit);
 			}
 		}
 		return tableIndex;
@@ -133,7 +133,7 @@ public class NKPhenotype extends Phenotype {
 				dist += 1;
 			}
 		}
-		return dist;
+		return dist; 
 	}
 	
 	/**
