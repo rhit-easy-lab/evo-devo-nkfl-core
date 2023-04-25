@@ -20,14 +20,18 @@ public class Constants {
 	public static final int K = Integer.parseInt(PropParser.getProperty("K"));
 	public static final int GENERATIONS_PER_CYCLE = Integer.parseInt(PropParser.getProperty("generationsPerCycle"));
 	public static final Boolean SINGLE_START = Boolean.parseBoolean(PropParser.getProperty("singleStart"));
-	
+	 
 //	Evolution Constants
 	public static final int NUM_GENERATIONS = Integer.parseInt(PropParser.getProperty("numGenerations"));
 	public static final int GENERATION_SIZE = Integer.parseInt(PropParser.getProperty("generationSize"));
 	public static final double PHENOTYPE_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("phenotypeMutationRate"));
 	public static final double BLOCK_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("blockMutationRate"));
 	public static final double PROGRAM_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("programMutationRate"));
+	
+//	Selection Constants
 	public static final String SELECTION_TYPE = PropParser.getProperty("selectionType");
+	public static final int ELITISM_QUANTITY = Integer.parseInt(PropParser.getProperty("elitismQuantity"));
+	public static final int TOURNAMENT_SIZE = Integer.parseInt(PropParser.getProperty("tournamentSize"));
 	
 //	Developmental Program Constants
 	public static final String STEPS = PropParser.getProperty("steps");

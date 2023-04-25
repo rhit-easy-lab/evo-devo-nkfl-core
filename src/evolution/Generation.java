@@ -84,5 +84,14 @@ public class Generation {
 		this.sortAgents();
 		return agents.get(0);
 	}
+	
+	public double getAverageFinalFitness() {
+		double totalFitness = 0;
+		for(Agent a : agents)
+		{
+			totalFitness += a.getFinalFitness();
+		}
+		return totalFitness / agents.size();
+	}
 }
  

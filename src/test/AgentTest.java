@@ -115,12 +115,12 @@ class AgentTest {
 		
 		//test strategy compilation
 		Agent testAgent = getTestAgent();
-		assertEquals(6, testAgent.strategy.size());
+		assertEquals(6, testAgent.getStrategy().size());
 		List<Step> expectedStrategy = new ArrayList<Step>();
 		expectedStrategy.addAll(b1);
 		expectedStrategy.addAll(b2);
 		expectedStrategy.addAll(b1);
-		assertEquals(expectedStrategy, testAgent.strategy);
+		assertEquals(expectedStrategy, testAgent.getStrategy());
 		
 		//test fitness throughout strategy
 		testAgent.executeStrategy();

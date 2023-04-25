@@ -44,12 +44,23 @@ public class Simulation {
 			case "truncation":
 				this.selectionStrategy = new SelectionTruncation();
 				break;
+			case "tournament":
+				this.selectionStrategy = new SelectionTournament();
+				break;
 			default:
 				System.out.println("SELECTION_TYPE not recognized");
 				this.fitFunction = null;
 		}
 		
 		Generation initialGeneration = new Generation(fitFunction);
+		initialGeneration.executeAllStrategies();
+		generations.add(initialGeneration);
+	}
+	
+	public Simulation(Generation initialGeneration, FitnessFunction fitFunction, SelectionStrategy selectStrategy)
+	{
+		this.fitFunction = fitFunction;
+		this.selectionStrategy = selectStrategy;
 		initialGeneration.executeAllStrategies();
 		generations.add(initialGeneration);
 	}
@@ -70,13 +81,8 @@ public class Simulation {
 		}
 	}
 	
-	public Generation[] getGenerations() {
-		Generation[] genList = new Generation[generations.size()];
-		for(int i=0; i<generations.size(); i++)
-		{
-			genList[i]=generations.get(i);
-		}
-		return genList;
+	public ArrayList<Generation> getGenerations() {
+		return generations;
 	}
 
 }
