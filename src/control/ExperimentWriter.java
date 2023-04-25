@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import agent.Agent;
@@ -13,20 +14,27 @@ import evolution.Generation;
 import evolution.Simulation;
 
 public class ExperimentWriter {
+	//TODO enable file overwrite options
 	private PrintWriter out;
-//	private boolean summary_stats; TODO
 	private int simulationNum = 0;
 	private StringBuilder line;
+	private List<String> params;
+	
+	public ExperimentWriter() throws IOException {
+		this(Constants.FILENAME,Constants.WRITER_PARAMS);
+		
+	}
 	
 	/**
 	 * Constructor for the Experiment Writer which outputs experimental results to a CSV file at the specified filename
 	 * Current implementation requires the manual construction of the given directory structure TODO
 	 * 
 	 * @param filename
+	 * @param params what columns to include in the output
 	 * @throws IOException
 	 */
-	public ExperimentWriter(String filename) throws IOException {
-		this(new FileWriter(rename(filename)));
+	public ExperimentWriter(String filename, String[] params) throws IOException {
+		this(new FileWriter(rename(filename)),params);
 	}
 	
 	/**
@@ -47,9 +55,14 @@ public class ExperimentWriter {
 	/**
 	 * Create an experiment writer to the given java.io.Writer
 	 * @param output
+	 * @param params what columns to include in the output
 	 */
-	public ExperimentWriter(Writer output) {
+	public ExperimentWriter(Writer output,String[] params) {
 		out = new PrintWriter(new BufferedWriter(output));
+		this.params = new ArrayList<String>();
+		for(String p:params) {
+			this.params.add(p);
+		}
 		writeHeader();
 	}
 	
@@ -62,17 +75,33 @@ public class ExperimentWriter {
 		line = new StringBuilder();
 		line.append("Simulation,");
 		line.append("Generation,");
-		line.append("Generation_size,");
-		line.append("Function,");
-		line.append("Block_best,");
-		line.append("Program_best,");
-//		line.append("Plasticity_best,"); I dont think we were doing this IDK TODO
-		line.append("Fitness_best,");
-//		if(summary_stats) {
-//			line.append("Fitness_avg,");
-//			line.append("Fitness_std,");
-//			line.append("Strategy_Hamming");
-//		}
+		line.append("Agent_number,");
+		if(params.contains("generation size")) {
+			line.append("Generation_size,");
+		}
+		if(params.contains("function string")) {
+			line.append("Function,");
+		}
+		if(params.contains("block")) {
+			line.append("Block,");
+		}
+		if(params.contains("program")) {
+			line.append("Program,");
+		}
+		if(params.contains("strategy")) {
+			line.append("Strategy,");
+		}
+		if(params.contains("final fitness")) {
+			line.append("Final_Fitness,");
+		}
+		if(params.contains("fitness history")) {
+			line.append("Fitness_history,");
+		}
+		if(params.contains("parent")) {
+			line.append("Parent_number,");
+		}
+		
+		
 		line.replace(line.length()-1, line.length(), "\n"); //replace the extra comma with a next line
 		out.print(line);
 	}
@@ -114,66 +143,96 @@ public class ExperimentWriter {
 	}
 	
 	/**
+	 * Writes the top agents as per the Constants File
+	 * @param gen
+	 * @param genIndex
+	 */
+	public void writeGen(Generation gen, String genIndex) {
+		writeGen(gen, genIndex, Constants.AGENTS_OUT);
+	}
+	
+	/**
+	 * Writes the top N agents of the generation to the csv
+	 * @param gen
+	 * @param genIndex
+	 * @param top_n
+	 */
+	public void writeGen(Generation gen, String genIndex, int top_n) {
+		int[] agent_numbers = new int[top_n];
+		for(int i = 0; i<top_n;i++) {
+			agent_numbers[i]=i;
+		}
+		writeGen(gen,genIndex,agent_numbers);
+	}
+	
+	/**
 	 * Writes a singular Generation to the CSV file
 	 * genIndex is a string rather than integer to allow for extra-evolutionary generation runs
 	 * @param gen
 	 * @param genIndex
 	 */
-	public void writeGen(Generation gen, String genIndex) {
-		line = new StringBuilder();
-		
-		// Simulation
-		line.append(simulationNum+",");
-		
-		// Generation
-		line.append(toCSVDelimited(genIndex));
-		
-		// Generation Size
-		line.append(Constants.GENERATION_SIZE+",");
-		
-		// Function
-		line.append(toCSVDelimited(Constants.FITNESS_FUNCTION_TYPE)); //it may make more sense to pass in the landscape IDK 
-		
-		// Block of Best
-		Agent best = gen.getBest();
-		StringBuilder sb = new StringBuilder();
-		for(List<Step> block : best.getBlocks()) {
-			sb.append("{");
-			for(Step s : block) {
-				sb.append(s.toString());
-				sb.append(",");
+	public void writeGen(Generation gen, String genIndex, int[] agent_numbers) {
+		List<Agent> agents = gen.getAgents();
+		for(int num:agent_numbers) {
+			
+			Agent agent = agents.get(num);
+			
+			line = new StringBuilder();
+			
+			// Simulation
+			line.append(simulationNum+",");
+
+			// Generation
+			line.append(toCSVDelimited(genIndex));
+
+			// Agent Number
+			line.append(num+",");
+			
+			if(params.contains("generation size")) {
+				line.append(Constants.GENERATION_SIZE+",");
 			}
-			sb.replace(sb.length()-1, sb.length(), "},"); // replace extra comma with closing bracket and separating comma
+			if(params.contains("function string")) {
+				line.append(toCSVDelimited(Constants.FITNESS_FUNCTION_TYPE));//TODO make this better so that it can include more details
+			}
+			if(params.contains("block")) {
+				StringBuilder sb = new StringBuilder();
+				for(List<Step> block : agent.getBlocks()) {
+					sb.append("{");
+					for(Step s : block) {
+						sb.append(s.toString());
+						sb.append(",");
+					}
+					sb.replace(sb.length()-1, sb.length(), "},"); // replace extra comma with closing bracket and separating comma
+				}
+				sb.deleteCharAt(sb.length()-1); // remove extra comma
+				line.append(toCSVDelimited(sb.toString()));
+			}
+			if(params.contains("program")) {
+				StringBuilder sb = new StringBuilder();
+				for(Integer block : agent.getProgram()) {
+					sb.append(block);
+					sb.append(",");
+				}
+				sb.deleteCharAt(sb.length()-1); // remove extra comma
+				line.append(toCSVDelimited(sb.toString()));
+			}
+			if(params.contains("strategy")) {
+				line.append(toCSVDelimited(agent.getStrategy().toString()));
+			}
+			if(params.contains("final fitness")) {
+				line.append(agent.getFinalFitness()+',');
+			}
+			if(params.contains("fitnesses")) {
+				line.append(toCSVDelimited(agent.getFitnessHistory().toString()));
+			}
+			if(params.contains("fitness history")) {
+				line.append("PLACEHOLDER,"); // TODO replace with actual parent number
+			}
+			
+			line.replace(line.length()-1, line.length(), "\n"); // replace the extra comma with a next line
+			out.print(line);
 		}
-		sb.deleteCharAt(sb.length()-1); // remove extra comma
-		line.append(toCSVDelimited(sb.toString()));
 		
-		// Program of Best
-		sb = new StringBuilder();
-		for(Integer block : best.getProgram()) {
-			sb.append(block);
-			sb.append(",");
-		}
-		sb.deleteCharAt(sb.length()-1); // remove extra comma
-		line.append(toCSVDelimited(sb.toString()));
-		
-		
-		// Fitness of Best
-		sb = new StringBuilder();
-		//--------debugging------------
-//		sb.append('"');
-//		for(Double fit : best.getFitnessHistory()) {
-//			sb.append(fit);
-//			sb.append(",");
-//		}
-		sb.append(best.getFinalFitness());
-		sb.append(",");
-		//----------------------------
-		sb.deleteCharAt(sb.length()-1); // remove extra comma
-		line.append(toCSVDelimited(sb.toString()));
-		
-		line.replace(line.length()-1, line.length(), "\n"); // replace the extra comma with a next line
-		out.print(line);
 	}
 	
 	/**

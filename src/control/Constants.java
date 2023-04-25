@@ -12,6 +12,8 @@ public class Constants {
 	public static final String FILENAME = PropParser.getProperty("filename");
 	public static final int GENERATION_SPACING = Integer.parseInt(PropParser.getProperty("generationSpacing"));
 	public static final Boolean REQUIRE_LAST_GENERATION = Boolean.parseBoolean(PropParser.getProperty("requireLastGeneration"));
+	public static final String[] WRITER_PARAMS = PropParser.getProperty("writerParams").toLowerCase().split(",|, ");
+	public static final int AGENTS_OUT = Integer.parseInt(PropParser.getProperty("agentsOut"));
 	
 //	NK Landscape Constants
 	public static final int N = Integer.parseInt(PropParser.getProperty("N"));

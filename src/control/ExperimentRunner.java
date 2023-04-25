@@ -29,7 +29,7 @@ public class ExperimentRunner {
 		}
 		
 		//Set up the .csv writer
-		ExperimentWriter writer = new ExperimentWriter(Constants.FILENAME);
+		ExperimentWriter writer = new ExperimentWriter();
 		
 		System.out.println("Writing to csv file " + ExperimentWriter.rename(Constants.FILENAME));
 		//Run all of our experiments, and write them to the file as we go
