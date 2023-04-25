@@ -34,7 +34,14 @@ public class SeededRandom extends Random {
 	{
 		if(Constants.FILENAME.equals("JUNITTESTFILE"))
 		{
-			SeededRandom.thisSingle = s;
+			if(s == null)
+			{
+				SeededRandom.thisSingle = new SeededRandom(Constants.SEED);
+			}
+			else
+			{
+				SeededRandom.thisSingle = s;
+			}
 		}
 		else
 		{
