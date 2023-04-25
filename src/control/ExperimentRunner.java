@@ -14,7 +14,7 @@ import evolution.Simulation;
  */
 public class ExperimentRunner {
 	
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws IOException 
 	{
 		//The first argument passed into ExperimentRunner is the configuration file.
 		//If no configuration file is specified, it runs using defaultConfig.properties

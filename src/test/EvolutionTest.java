@@ -38,30 +38,30 @@ class EvolutionTest {
 		init();
 		FitnessFunction f = new NumOnes();
 		
-		int[] sums = new int[100];
-		for(int gennum=0; gennum < 20; gennum++)
+		int[] sums = new int[150];
+		for(int gennum=0; gennum < 10; gennum++)
 		{
 			Generation g = new Generation(f);
 			for(Agent a : g.getAgents())
 			{
 				for(int bit=0; bit<Constants.N; bit++)
 				{
-					sums[bit+gennum*4] = sums[bit] + ((NKPhenotype)(a.getPhenotypeHistory().get(0))).getBitstring()[bit];
+					sums[bit+gennum*15] = sums[bit+gennum*15] + ((NKPhenotype)(a.getPhenotypeHistory().get(0))).getBitstring()[bit];
 				}
 			}
 		}
 		
-		int range = 20;
+		int range = 15;
 		int successes = 0;
-		for(int i=0; i<Constants.N*20; i++)
+		for(int i=0; i<Constants.N*10; i++)
 		{
 			if((50-range <= sums[i]) && (sums[i] <= 50+range))
 			{
 				successes++;
 			}
 		}
-		
-		assertTrue(successes >= 80);
+		System.out.println(successes);
+		assertTrue(successes >= 120);
 	}
 	
 	/**

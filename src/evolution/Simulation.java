@@ -67,7 +67,12 @@ public class Simulation {
 	
 	public void runSimulation()
 	{
-		for(int generationNumber = 1; generationNumber < Constants.NUM_GENERATIONS+1; generationNumber++)
+		runSimulation(Constants.NUM_GENERATIONS);
+	}
+	
+	public void runSimulation(int numGenerations)
+	{
+		for(int generationNumber = 1; generationNumber < numGenerations+1; generationNumber++)
 		{
 			//if enough generations have passed, invoke the fitness function's dynamic behavior
 			if(Constants.GENERATIONS_PER_CYCLE % Constants.GENERATIONS_PER_CYCLE == 0)

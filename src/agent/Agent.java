@@ -281,23 +281,23 @@ public class Agent implements Comparable<Agent> {
 		phenotype.mutate();
 		
 		//program mutation
-		for(int programIndex=0; programIndex < Constants.PROGRAM_LENGTH; programIndex++)
+		for(int programIndex=0; programIndex < program.size(); programIndex++)
 		{
 			if(SeededRandom.getInstance().nextDouble() < Constants.PROGRAM_MUTATION_RATE && program.size()>0)
 			{
 				//Ensure we don't roll the same block again
-				int newBlock = SeededRandom.getInstance().nextInt(Constants.NUMBER_OF_BLOCKS);
+				int newBlock = SeededRandom.getInstance().nextInt(blocks.size());
 				if(newBlock >= program.get(programIndex))
 				{
-					newBlock = (newBlock + 1) % Constants.NUMBER_OF_BLOCKS;
+					newBlock = (newBlock + 1) % blocks.size();
 				}
 				program.set(programIndex, newBlock);
 			}
 		}
 		//block mutation
-		for(int block=0; block < Constants.NUMBER_OF_BLOCKS; block++)
+		for(int block=0; block < blocks.size(); block++)
 		{
-			for(int blockIndex=0; blockIndex < Constants.BLOCK_LENGTH; blockIndex++)
+			for(int blockIndex=0; blockIndex < blocks.get(0).size(); blockIndex++)
 			{
 				if(SeededRandom.getInstance().nextDouble() < Constants.BLOCK_MUTATION_RATE && blocks.size()>0)
 				{

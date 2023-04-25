@@ -21,8 +21,6 @@ import landscape.FitnessFunction;
 import landscape.NumOnes;
 
 class AgentTest {
-	//Common test params
-	
 	private void init()
 	{
 		PropParser.load("src/test/testConfig.properties");
@@ -191,7 +189,7 @@ class AgentTest {
 			NKPhenotype testPhenotype = new NKPhenotype(bitstr);
 			dnd.replaceNextDouble(mrate);
 			testPhenotype.mutate();
-			if(mrate < 0.25)
+			if(mrate < 0.03)
 			{
 				assertNotEquals(control, testPhenotype.getBitstring());
 				assertEquals(4, testPhenotype.getDistance(new NKPhenotype(control)));
@@ -224,7 +222,7 @@ class AgentTest {
 			Agent testAgent = control.identicalChild();
 			dnd.replaceNextDouble(mrate);
 			testAgent.mutate();
-			if(mrate < 0.25)
+			if(mrate < 0.03)
 			{
 				assertNotEquals(control.getBlocks(), testAgent.getBlocks());
 				assertNotEquals(control.getProgram(), testAgent.getProgram());
