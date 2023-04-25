@@ -24,10 +24,18 @@ public class NKPhenotype extends Phenotype {
 	 * Creates a random NKPhenotype
 	 */
 	public NKPhenotype() {
-		this.bitstring = new int[Constants.N];
+		this(Constants.N);
+	}
+	
+	/**
+	 * Creates a random NKPhenotype from a specified n
+	 * @param n
+	 */
+	public NKPhenotype(int n) {
+		this.bitstring = new int[n];
 		
 		//Set each bit to a random 0 or 1
-		for(int bit=0; bit<Constants.N; bit++)
+		for(int bit=0; bit<n; bit++)
 		{
 			bitstring[bit] = SeededRandom.getInstance().nextInt(2);
 		}
@@ -66,7 +74,7 @@ public class NKPhenotype extends Phenotype {
 	}
 
 	@Override
-	public Phenotype getIdenticalCopy() {
+	public NKPhenotype getIdenticalCopy() {
 		int[] bitstringCopy = new int[bitstring.length];
 		for(int bit=0; bit<bitstring.length; bit++)
 		{
@@ -126,5 +134,17 @@ public class NKPhenotype extends Phenotype {
 			}
 		}
 		return dist;
+	}
+	
+	/**
+	 * Flips the specified bit of a 
+	 * @param index
+	 */
+	public void flipBit(int index) {
+		if(bitstring[index]==0) {
+			bitstring[index]=1;
+		}else {
+			bitstring[index]=0;
+		}
 	}
 }
