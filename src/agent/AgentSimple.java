@@ -3,7 +3,6 @@ package agent;
 import java.util.ArrayList;
 import java.util.List;
 
-import control.Constants;
 import control.SeededRandom;
 import landscape.FitnessFunction;
 import landscape.NKLandscape;
@@ -53,10 +52,10 @@ public class AgentSimple implements Comparable<AgentSimple> {
 		this.initializeHistory();
 	}
 	
-	public static Phenotype getRandomPhenotype() {
-		switch(Constants.PHENOTYPE_TYPE.toLowerCase()) {
+	public static Phenotype getRandomPhenotype(int n) {
+		switch("nkphenotype") {
 			case "nkphenotype":
-				return new Bitstring();
+				return new Bitstring(n);
 			default:
 				System.out.println("PHENOTYPE_TYPE not recognized");
 				return null;

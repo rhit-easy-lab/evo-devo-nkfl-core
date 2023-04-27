@@ -4,7 +4,6 @@ import java.util.Random;
 
 import agent.Bitstring;
 import agent.Phenotype;
-import control.Constants;
 
 public class NKLandscape implements FitnessFunction {
 	// Instance Variables
@@ -12,22 +11,6 @@ public class NKLandscape implements FitnessFunction {
 
 	public final int landscapeSeed, n, k;
 	Random landscapeRnd; // This exists so our entire landscape has its own seed
-
-	/**
-	 * Initializes a NK fitness landscape using the constants
-	 * 
-	 * @param seed for the landscape
-	 */
-	public NKLandscape(int seed) {
-		this.landscapeSeed = seed;
-		this.landscapeRnd = new Random(landscapeSeed);
-		this.n = Constants.N;
-		this.k = Constants.K;
-		
-		double[][] interactionTable = generateRandomInteractionTable();
-		generateFitnessTable(interactionTable); // this has no return value because it stores its data in the landscape
-												// globals
-	}
 	
 	/**
 	 * Initializes a NK fitness landscape

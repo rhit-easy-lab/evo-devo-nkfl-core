@@ -25,9 +25,4 @@ public abstract class Phenotype {
 	 * @return Identical copy of phenotype, with no shared dependencies
 	 */
 	public abstract Phenotype getIdenticalCopy();
-	
-	/**
-	 * Mutates the currently selected phenotype. Used in evolutionary loop
-	 */
-	public abstract void mutate();
 }

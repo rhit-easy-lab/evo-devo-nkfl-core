@@ -3,8 +3,6 @@ package agent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import control.Constants;
 import control.SeededRandom;
 
 /**
@@ -20,13 +18,6 @@ import control.SeededRandom;
 public class Bitstring extends Phenotype {
 	
 	private int[] bitstring;
-	
-	/**
-	 * Creates a random NKPhenotype
-	 */
-	public Bitstring() {
-		this(Constants.N);
-	}
 	
 	/**
 	 * Creates a random NKPhenotype from a specified n
@@ -82,17 +73,6 @@ public class Bitstring extends Phenotype {
 			bitstringCopy[bit]=bitstring[bit];
 		}
 		return new Bitstring(bitstringCopy);
-	}
-
-	@Override
-	public void mutate() {
-		for(int bit=0; bit<bitstring.length; bit++)
-		{
-			if(SeededRandom.getInstance().nextDouble() < Constants.PHENOTYPE_MUTATION_RATE)
-			{
-				bitstring[bit] = (bitstring[bit]+1)%2;
-			}
-		}
 	}
 	
 	//Method to turn the bitstring into a index, usable by the NKLandscape.

@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import control.Constants;
 import control.SeededRandom;
 
 /**
@@ -29,13 +28,7 @@ public enum Step {
 	 * @return List of valid steps, as specified by Constants.STEPS
 	 */
 	private static List<Step> getValidSteps() {
-		List<Step> validSteps = new ArrayList<Step>();
-		String[] stepsAllowed = Constants.STEPS.split(",");
-		for(String step : stepsAllowed)
-		{
-			validSteps.add(Step.valueOf(step));
-		}
-		return validSteps;
+		return Arrays.asList(Step.values());
 	}
 	
 	/**

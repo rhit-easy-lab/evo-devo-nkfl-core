@@ -3,7 +3,6 @@ package agent;
 import java.util.ArrayList;
 import java.util.List;
 
-import control.Constants;
 import control.SeededRandom;
 import landscape.FitnessFunction;
 import landscape.NKLandscape;
@@ -19,7 +18,7 @@ import landscape.NKLandscape;
  * @author Jacob Ashworth
  *
  */
-public class Agent implements Comparable<Agent> {
+public class Agent {
 	//Fields related to evolutionary past
 	private Agent parent = null;
 	
@@ -51,25 +50,25 @@ public class Agent implements Comparable<Agent> {
 	 * 
 	 * @param fitnessFunction FitnessFunction for the agent to operate on
 	 */
-	public Agent(FitnessFunction fitnessFunction)
+	public Agent(FitnessFunction fitnessFunction, int n, int programLength, int blockLength, int numBlocks)
 	{
 		//Switch statement to control which phenotype type is initialized
-		this.phenotype = Agent.getRandomPhenotype();
+		this.phenotype = Agent.getRandomPhenotype(n);
 		this.fitnessFunction = fitnessFunction;
 		this.fitness = fitnessFunction.getFitness(phenotype); 
 		
 		//Create a random program
 		program = new ArrayList<Integer>();
-		for(int programIndex=0; programIndex < Constants.PROGRAM_LENGTH; programIndex++)
+		for(int programIndex=0; programIndex < programLength; programIndex++)
 		{
-			program.add(SeededRandom.getInstance().nextInt(Constants.NUMBER_OF_BLOCKS));
+			program.add(SeededRandom.getInstance().nextInt(blockLength));
 		}
 		//Create random blocks
 		blocks = new ArrayList<List<Step>>();
-		for(int block=0; block < Constants.NUMBER_OF_BLOCKS; block++)
+		for(int block=0; block < numBlocks; block++)
 		{
 			List<Step> thisBlock = new ArrayList<Step>();
-			for(int stepIndex=0; stepIndex < Constants.BLOCK_LENGTH; stepIndex++)
+			for(int stepIndex=0; stepIndex < blockLength; stepIndex++)
 			{
 				thisBlock.add(Step.randomStep());
 			}
@@ -85,9 +84,9 @@ public class Agent implements Comparable<Agent> {
 	 * 
 	 * @param fitnessFunction FitnessFunction for the agent to operate on
 	 */
-	public Agent(FitnessFunction fitnessFunction, Phenotype p)
+	public Agent(FitnessFunction fitnessFunction, Phenotype p, int n, int programLength, int blockLength, int numBlocks)
 	{
-		this(fitnessFunction);
+		this(fitnessFunction, n, programLength, blockLength, numBlocks);
 		
 		//Set our phenotype to the given one. Make a copy so we don't have a ton of agents linked to the same phenotype
 		this.phenotype = p.getIdenticalCopy();
@@ -110,10 +109,10 @@ public class Agent implements Comparable<Agent> {
 		this.compileStrategyAndInitializeHistory();
 	}
 	
-	public static Phenotype getRandomPhenotype() {
-		switch(Constants.PHENOTYPE_TYPE.toLowerCase()) {
+	public static Phenotype getRandomPhenotype(int n) {
+		switch("nkphenotype") {
 			case "nkphenotype":
-				return new Bitstring();
+				return new Bitstring(n);
 			default:
 				System.out.println("PHENOTYPE_TYPE not recognized");
 				return null;
@@ -192,46 +191,9 @@ public class Agent implements Comparable<Agent> {
 	 */
 	public void executeStrategy()
 	{
-		
-		if(Constants.STRATEGY_SAMPLE_SIZE == 1)
+		while(!agentDeveloped())
 		{
-			while(!agentDeveloped())
-			{
-				executeSingleStep();
-			}
-		}
-		else
-		{
-			//Set up somewhere to average our fitness information
-			double[] summedFitnesses = new double[strategy.size()];
-			//Run our strategy STRATEGY_SAMPLE_SIZE times, and sum the results
-			for(int sample=0; sample<Constants.STRATEGY_SAMPLE_SIZE; sample++)
-			{
-				//Wipe all information and reset agent to initial configuration
-				currentStep = 0;
-				phenotype = phenotypeHistory.get(0);
-				phenotypeHistory.clear();
-				phenotypeHistory.add(phenotype);
-				fitness = fitnessHistory.get(0);
-				fitnessHistory.clear();
-				fitnessHistory.add(fitness);
-				//Run the strategy
-				while(!agentDeveloped())
-				{
-					executeSingleStep();
-				}
-				//Store fitness information
-				for(int stepIndex = 0; stepIndex < strategy.size(); stepIndex++)
-				{
-					summedFitnesses[stepIndex]=summedFitnesses[stepIndex] + fitnessHistory.get(stepIndex);
-				}
-			}
-			//Now store the average fitness at each step in the pastFitnesses list
-			fitnessHistory.clear();
-			for(int stepIndex = 0; stepIndex < strategy.size(); stepIndex++)
-			{
-				fitnessHistory.add(summedFitnesses[stepIndex] / (double) Constants.STRATEGY_SAMPLE_SIZE);
-			}
+			executeSingleStep();
 		}
 	}
 	
@@ -269,74 +231,6 @@ public class Agent implements Comparable<Agent> {
 		
 		//Use the constructor to make the new agent, and return it
 		return new Agent(fitnessFunction, childPhenotype, childProgram, childBlocks, this);
-	}
-	
-	/**
-	 * Mutates the agent, using config specified mutation rates to make changes
-	 * to the program, blocks, and phenotype
-	 */
-	public void mutate()
-	{
-		//phenotype mutation
-		phenotype.mutate();
-		
-		//program mutation
-		for(int programIndex=0; programIndex < program.size(); programIndex++)
-		{
-			if(SeededRandom.getInstance().nextDouble() < Constants.PROGRAM_MUTATION_RATE && program.size()>0)
-			{
-				//Ensure we don't roll the same block again
-				int newBlock = SeededRandom.getInstance().nextInt(blocks.size());
-				if(newBlock >= program.get(programIndex))
-				{
-					newBlock = (newBlock + 1) % blocks.size();
-				}
-				program.set(programIndex, newBlock);
-			}
-		}
-		//block mutation
-		for(int block=0; block < blocks.size(); block++)
-		{
-			for(int blockIndex=0; blockIndex < blocks.get(0).size(); blockIndex++)
-			{
-				if(SeededRandom.getInstance().nextDouble() < Constants.BLOCK_MUTATION_RATE && blocks.size()>0)
-				{
-					//Ensure we don't roll the same step again
-					Step currentStep = blocks.get(block).get(blockIndex);
-					List<Step> newSteps = new ArrayList<Step>();
-					for(Step s : Step.validSteps)
-					{
-						if(!s.equals(currentStep))
-						{
-							newSteps.add(s);
-						}
-					}
-					blocks.get(block).set(blockIndex, newSteps.get(SeededRandom.getInstance().nextInt(newSteps.size())));
-				}
-			}
-		}
-		
-		//Refresh these values since they may have changed
-		this.compileStrategyAndInitializeHistory();
-	}
-	
-	/**
-	 * Compares fitness for sorting
-	 */
-	@Override
-	public int compareTo(Agent other) {
-		if(this.fitness > other.fitness)
-		{
-			return 1;
-		}
-		else if(this.fitness == other.fitness)
-		{
-			return 0;
-		}
-		else
-		{
-			return -1;
-		}
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------
