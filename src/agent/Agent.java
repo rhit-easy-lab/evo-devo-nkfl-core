@@ -362,16 +362,17 @@ public class Agent implements Comparable<Agent> {
 	 */
 	private void steepestClimb()
 	{
-		List<Phenotype> neighbors = phenotype.getNeighbors();
-		Phenotype bestNeighbor = neighbors.get(0);
-		for(Phenotype neighbor : neighbors)
+		List<Phenotype> locations = phenotype.getNeighbors();
+		locations.add(phenotype);
+		Phenotype bestLocation = locations.get(0);
+		for(Phenotype location : locations)
 		{
-			if(fitnessFunction.getFitness(neighbor) > fitnessFunction.getFitness(bestNeighbor))
+			if(fitnessFunction.getFitness(location) > fitnessFunction.getFitness(bestLocation))
 			{
-				bestNeighbor = neighbor;
+				bestLocation = location;
 			}
 		}
-		phenotype = bestNeighbor;
+		phenotype = bestLocation;
 	}
 	
 	/**
@@ -379,16 +380,17 @@ public class Agent implements Comparable<Agent> {
 	 */
 	private void steepestFall()
 	{
-		List<Phenotype> neighbors = phenotype.getNeighbors();
-		Phenotype worstNeighbor = neighbors.get(0);
-		for(Phenotype neighbor : neighbors)
+		List<Phenotype> locations = phenotype.getNeighbors();
+		locations.add(phenotype);
+		Phenotype worstLocation = locations.get(0);
+		for(Phenotype location : locations)
 		{
-			if(fitnessFunction.getFitness(neighbor) < fitnessFunction.getFitness(worstNeighbor))
+			if(fitnessFunction.getFitness(location) < fitnessFunction.getFitness(worstLocation))
 			{
-				worstNeighbor = neighbor;
+				worstLocation = location;
 			}
 		}
-		phenotype = worstNeighbor;
+		phenotype = worstLocation;
 	}
 	//-------------------------------------------------------------------------------------------------------------------
 
