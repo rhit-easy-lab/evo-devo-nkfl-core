@@ -177,6 +177,7 @@ public class AgentSimple implements Comparable<AgentSimple> {
 	private void steepestClimb()
 	{
 		List<Phenotype> neighbors = phenotype.getNeighbors();
+		neighbors.add(phenotype.getIdenticalCopy());
 		Phenotype bestNeighbor = neighbors.get(0);
 		for(Phenotype neighbor : neighbors)
 		{
@@ -194,6 +195,7 @@ public class AgentSimple implements Comparable<AgentSimple> {
 	private void steepestFall()
 	{
 		List<Phenotype> neighbors = phenotype.getNeighbors();
+		neighbors.add(phenotype.getIdenticalCopy());
 		Phenotype worstNeighbor = neighbors.get(0);
 		for(Phenotype neighbor : neighbors)
 		{
