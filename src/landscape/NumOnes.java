@@ -1,6 +1,6 @@
 package landscape;
 
-import agent.NKPhenotype;
+import agent.Bitstring;
 import agent.Phenotype;
 
 /**
@@ -14,7 +14,7 @@ public class NumOnes implements FitnessFunction {
 
 	@Override
 	public double getFitness(Phenotype p) {
-		int[] bitstr = ((NKPhenotype) p).getBitstring();
+		int[] bitstr = ((Bitstring) p).getBitstring();
 		int score = 0;
 		for(int i=0; i<bitstr.length; i++)
 		{

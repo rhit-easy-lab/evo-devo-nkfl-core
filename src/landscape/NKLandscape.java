@@ -2,7 +2,7 @@ package landscape;
 
 import java.util.Random;
 
-import agent.NKPhenotype;
+import agent.Bitstring;
 import agent.Phenotype;
 import control.Constants;
 
@@ -57,7 +57,7 @@ public class NKLandscape implements FitnessFunction {
 	@Override
 	public double getFitness(Phenotype p) {
 		// Since this is an NKLandscape, we cast to NKPhenotype
-		NKPhenotype phenotype = (NKPhenotype) p;
+		Bitstring phenotype = (Bitstring) p;
 		// Get the fitness of the phenotype from our table using the provided tableIndex
 		// function
 		return fitTable[phenotype.getNKTableIndex()];

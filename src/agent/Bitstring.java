@@ -16,14 +16,14 @@ import control.SeededRandom;
  * @author Jacob Ashworth
  *
  */
-public class NKPhenotype extends Phenotype {
+public class Bitstring extends Phenotype {
 	
 	private int[] bitstring;
 	
 	/**
 	 * Creates a random NKPhenotype
 	 */
-	public NKPhenotype() {
+	public Bitstring() {
 		this(Constants.N);
 	}
 	
@@ -31,7 +31,7 @@ public class NKPhenotype extends Phenotype {
 	 * Creates a random NKPhenotype from a specified n
 	 * @param n
 	 */
-	public NKPhenotype(int n) {
+	public Bitstring(int n) {
 		this.bitstring = new int[n];
 		
 		//Set each bit to a random 0 or 1
@@ -45,7 +45,7 @@ public class NKPhenotype extends Phenotype {
 	 * Creates a NKPhenotype with the specified bitstring
 	 * @param bitstring
 	 */
-	public NKPhenotype(int[] bitstring) {
+	public Bitstring(int[] bitstring) {
 		this.bitstring = bitstring;
 	}
 
@@ -68,19 +68,19 @@ public class NKPhenotype extends Phenotype {
 					neighbor[bit]=(bitstring[bit]+1)%2; //Simple way to flip a bit
 				}
 			}
-			neighbors.add(new NKPhenotype(neighbor));
+			neighbors.add(new Bitstring(neighbor));
 		}
 		return neighbors;
 	}
 
 	@Override
-	public NKPhenotype getIdenticalCopy() {
+	public Bitstring getIdenticalCopy() {
 		int[] bitstringCopy = new int[bitstring.length];
 		for(int bit=0; bit<bitstring.length; bit++)
 		{
 			bitstringCopy[bit]=bitstring[bit];
 		}
-		return new NKPhenotype(bitstringCopy);
+		return new Bitstring(bitstringCopy);
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class NKPhenotype extends Phenotype {
 	 * @param other
 	 * @return
 	 */
-	public int getDistance(NKPhenotype other)
+	public int getDistance(Bitstring other)
 	{
 		int dist = 0;
 		for(int index=0; index<bitstring.length; index++)

@@ -1,8 +1,16 @@
-package visualizer;
+package visualizers;
 
+import java.awt.BorderLayout;
+import java.awt.HeadlessException;
 import java.io.IOException;
 
+import javax.swing.JFrame;
+
 import control.PropParser;
+import control.SeededRandom;
+import landscape.FitnessFunction;
+import landscape.NKLandscape;
+import visualizerComponents.N3LandscapeFrame;
 
 /**
  * This class exists to house the main method of the simulator,
@@ -12,7 +20,8 @@ import control.PropParser;
  * @author Jacob Ashworth
  *
  */
-public class LandscapeVisualizer {
+public class LandscapeVisualizerN3 {
+	
 	
 	public static void main(String[] args) throws IOException 
 	{
@@ -28,7 +37,14 @@ public class LandscapeVisualizer {
 			PropParser.load(PropParser.defaultFilename);
 		}
 		
-		//Set up the .csv writer
+		JFrame frame = new JFrame();
 		
+		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 3, 0);
+		N3LandscapeFrame landscape = new N3LandscapeFrame(f, 500, 20, 20);
+		
+		frame.add(landscape);
+		
+		frame.setBounds(100, 100, 700, 700);
+        frame.setVisible(true);
 	}
 }
