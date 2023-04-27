@@ -28,7 +28,7 @@ public class AgentSimple implements Comparable<AgentSimple> {
 	private int currentStep = 0;
 	 
 	//Fields related to phenotype.
-	private Phenotype phenotype;
+	public Phenotype phenotype;
 	/* phenotypeHistory is indexed by step number, so phenotypeHistory.get(4)
 	 * would give you the phenotype immediately before step 4 was executed */
 	private List<Phenotype> phenotypeHistory;
@@ -45,6 +45,7 @@ public class AgentSimple implements Comparable<AgentSimple> {
 	 */
 	public AgentSimple(FitnessFunction fitnessFunction, Phenotype phenotype, List<Step> strategy)
 	{
+		this.strategy = strategy;
 		this.phenotype = phenotype;
 		this.fitnessFunction = fitnessFunction;
 		this.fitness = fitnessFunction.getFitness(phenotype);

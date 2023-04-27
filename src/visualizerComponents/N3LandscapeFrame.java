@@ -1,6 +1,8 @@
 package visualizerComponents;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -13,6 +15,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import agent.AgentSimple;
 import agent.Bitstring;
 import landscape.FitnessFunction;
 
@@ -42,6 +45,13 @@ public class N3LandscapeFrame extends JPanel {
 			Bitstring b = new Bitstring(bitstringFromInt(i));
 			fitnesses.put(i, Math.round(function.getFitness(b)*1000.0)/1000.0);
 		}
+		this.setPreferredSize(new Dimension(drawSize+xloc, drawSize+yloc));
+	}
+	
+	AgentSimple as = null;
+	public void addAgentSimple(AgentSimple as)
+	{
+		this.as = as;
 	}
 	
 	@Override
@@ -90,10 +100,23 @@ public class N3LandscapeFrame extends JPanel {
 	{
 		g2.translate(xoffset, yoffset);
 		int sidelen = drawSize/7;
-		g2.drawRect(0, 0, sidelen, sidelen);
+		
 		
 		FontMetrics metrics = g2.getFontMetrics(f);
 		String boxName = Arrays.toString(bitstringFromInt(box));
+		if(as != null)
+		{
+			if(as.phenotype.toString().equals(boxName))
+			{
+				g2.setColor(Color.RED);
+			}
+			else
+			{
+				g2.setColor(Color.BLACK);
+			}
+		}
+		g2.drawRect(0, 0, sidelen, sidelen);
+		g2.setColor(Color.BLACK);
 		int x1 = (sidelen - metrics.stringWidth(boxName)) / 2;
 		int y1 = ((sidelen - metrics.getHeight()) / 2) + metrics.getAscent() - metrics.getAscent();
 		String boxFit = "fit:"+fitnesses.get(box)+"000000";

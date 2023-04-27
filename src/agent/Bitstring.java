@@ -1,6 +1,7 @@
 package agent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import control.Constants;
@@ -146,5 +147,11 @@ public class Bitstring extends Phenotype {
 		}else {
 			bitstring[index]=0;
 		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return Arrays.toString(bitstring);
 	}
 }
