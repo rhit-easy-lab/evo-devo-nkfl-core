@@ -19,8 +19,6 @@ import landscape.NKLandscape;
  *
  */
 public class Agent {
-	//Fields related to evolutionary past
-	private Agent parent = null;
 	
 	//Fields related to developmental strategy
 	private List<Integer> program;
@@ -33,7 +31,7 @@ public class Agent {
 	private int currentStep = 0;
 	 
 	//Fields related to phenotype.
-	private Phenotype phenotype;
+	public Phenotype phenotype;
 	/* phenotypeHistory is indexed by step number, so phenotypeHistory.get(4)
 	 * would give you the phenotype immediately before step 4 was executed */
 	private List<Phenotype> phenotypeHistory;
@@ -97,14 +95,13 @@ public class Agent {
 	 * Constructor used to exactly specify an agent, with all relevant fields. 
 	 * Mostly called by the identicalChild() function.
 	 */
-	public Agent(FitnessFunction fitnessFunction, Phenotype phenotype, List<Integer> program, List<List<Step>> blocks, Agent parent)
+	public Agent(FitnessFunction fitnessFunction, Phenotype phenotype, List<Integer> program, List<List<Step>> blocks)
 	{
 		this.phenotype = phenotype;
 		this.fitnessFunction = fitnessFunction;
 		this.fitness = fitnessFunction.getFitness(phenotype);
 		this.program = program;
 		this.blocks = blocks;
-		this.parent = parent;
 		//Compile the program and blocks into the strategy
 		this.compileStrategyAndInitializeHistory();
 	}
@@ -230,7 +227,7 @@ public class Agent {
 		Phenotype childPhenotype = phenotype.getIdenticalCopy();
 		
 		//Use the constructor to make the new agent, and return it
-		return new Agent(fitnessFunction, childPhenotype, childProgram, childBlocks, this);
+		return new Agent(fitnessFunction, childPhenotype, childProgram, childBlocks);
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------
@@ -257,6 +254,7 @@ public class Agent {
 	private void steepestClimb()
 	{
 		List<Phenotype> neighbors = phenotype.getNeighbors();
+		neighbors.add(phenotype.getIdenticalCopy());
 		Phenotype bestNeighbor = neighbors.get(0);
 		for(Phenotype neighbor : neighbors)
 		{
@@ -274,6 +272,7 @@ public class Agent {
 	private void steepestFall()
 	{
 		List<Phenotype> neighbors = phenotype.getNeighbors();
+		neighbors.add(phenotype.getIdenticalCopy());
 		Phenotype worstNeighbor = neighbors.get(0);
 		for(Phenotype neighbor : neighbors)
 		{

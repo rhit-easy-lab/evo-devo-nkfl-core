@@ -15,36 +15,41 @@ import java.util.Map;
 import agent.Step;
 import javax.swing.JPanel;
 
-
+import agent.Agent;
 import agent.AgentSimple;
 import agent.Bitstring;
 import agent.Phenotype;
 import landscape.FitnessFunction;
 
-public class AgentSimpleFrame extends JPanel {
+public class AgentFrame extends JPanel {
 	int xloc;
 	int yloc;
-	AgentSimple a;
+	Agent a;
 	Font f = new Font("TimesRoman", Font.PLAIN, 13);
 	FitnessFunction fitFun;
 	int width = 750;
 	int height = 500;
+	List<Color> blockColors = new ArrayList<Color>();
 	
-	public AgentSimpleFrame(AgentSimple a, FitnessFunction fitFun, int xloc, int yloc)
+	public AgentFrame(Agent a, FitnessFunction fitFun, int xloc, int yloc)
 	{
 		this.a=a;
 		this.xloc=xloc;
 		this.yloc=yloc;
 		this.fitFun = fitFun;
 		this.setPreferredSize(new Dimension(width+20, height));
+		
+		blockColors.add(Color.ORANGE);
+//		blockColors.add(Color.YELLOW);
+		blockColors.add(Color.GREEN);
+		blockColors.add(Color.BLUE);
+		blockColors.add(Color.MAGENTA);
+		blockColors.add(Color.PINK);
 	}
 	
-	public AgentSimpleFrame(AgentSimple a, FitnessFunction fitFun, int xloc, int yloc, int width, int height)
+	public AgentFrame(Agent a, FitnessFunction fitFun, int xloc, int yloc, int width, int height)
 	{
-		this.a=a;
-		this.xloc=xloc;
-		this.yloc=yloc;
-		this.fitFun = fitFun;
+		this(a,fitFun,xloc,yloc);
 		this.width = width;
 		this.height = height;
 		this.setPreferredSize(new Dimension(width+20, height));
@@ -58,6 +63,12 @@ public class AgentSimpleFrame extends JPanel {
 		g2.setStroke(new BasicStroke(2));
 		
 		g2.drawRect(0, 0, width, height);
+		g2.drawString("Blocks and Program", 10, 20);
+		
+		drawBlocks(g2);
+		g2.translate(0, 200);
+		
+		g2.drawRect(0, 0, width, height-200);
 		g2.drawLine(0, 150, width, 150);
 		g2.drawString("History and Strategy", 10, 20);
 		
@@ -69,7 +80,77 @@ public class AgentSimpleFrame extends JPanel {
 		g2.translate(0, -150);
 		
 		g2.setStroke(new BasicStroke(1));
+		
+		g2.translate(0, -200);
+		
 		g2.translate(-xloc, -yloc);
+	}
+	
+	int sidelen = 500/7;
+	int sidewid = 500/7;
+	//Written assuming that block and program lengths are <=3. Might act weird if not true.
+	private void drawBlocks(Graphics2D g2)
+	{
+		int center = width/2;
+		int boxwidth = 100;
+		int boxheight = 30;
+		FontMetrics metrics = g2.getFontMetrics(f);
+		List<Integer> prog = a.getProgram();
+		int totalWidth = prog.size()*boxwidth;
+		int tl = center-totalWidth/2;
+		String progName = "Program";
+		int x = (width - metrics.stringWidth(progName)) / 2;
+		g2.drawString(progName, x, 20);
+		for(int block=0; block<prog.size(); block++)
+		{
+			g2.setColor(blockColors.get(prog.get(block)));
+			 g2.drawRect(tl+block*boxwidth, 30, boxwidth, boxheight);
+			 g2.setColor(Color.BLACK);
+			 String stepName = prog.get(block).toString();
+			int x1 = (boxwidth - metrics.stringWidth(stepName)) / 2;
+			int y1 = ((boxheight - metrics.getHeight()) / 2) + metrics.getAscent();
+			g2.drawString(stepName, tl + x1 + (boxwidth*block), y1+30);
+		}
+		
+		
+		String blockName = "Blocks";
+		g2.drawString(blockName, x, 80);
+		int totalBlocksLength = 0;
+		for(List<Step> block : a.getBlocks())
+		{
+			for(Step s : block)
+			{
+				totalBlocksLength++;
+			}
+		}
+		
+		int topLeft = center-(totalBlocksLength*boxwidth/2)-(20*a.getBlocks().size());
+		int offsetSum = topLeft;
+		for(int i=0; i<a.getBlocks().size(); i++)
+		{
+			offsetSum+=20;
+			
+			List<Step> block = a.getBlocks().get(i);
+			int totalBlockWidth = boxwidth*block.size();
+			String name = "block:"+i;
+			int x3 = (totalBlockWidth - metrics.stringWidth(name)) / 2;
+			int y3 = ((boxheight - metrics.getHeight()) / 2) + metrics.getAscent();
+			g2.drawString(name, x3+offsetSum, y3+80);
+			
+			for(Step s : block)
+			{
+				g2.setColor(blockColors.get(i));
+				g2.drawRect(offsetSum, 110, boxwidth, boxheight);
+				String stepName = s.name();
+				int x1 = (boxwidth - metrics.stringWidth(stepName)) / 2;
+				int y1 = ((boxheight - metrics.getHeight()) / 2) + metrics.getAscent();
+				g2.setColor(Color.BLACK);
+				g2.drawString(stepName, x1+offsetSum, y1+110);
+				offsetSum += boxwidth;
+			}
+		}
+		
+		
 	}
 	
 	private void drawHistory(Graphics2D g2)
@@ -103,7 +184,9 @@ public class AgentSimpleFrame extends JPanel {
 			}
 			else
 			{
+				g2.setColor(blockColors.get(stepInBlock(i)));
 				g2.drawRect(boxwidth*i, 0, boxwidth, 30);
+				g2.setColor(Color.BLACK);
 				String stepName = strategy.get(i-1).name();
 				int x1 = (boxwidth - metrics.stringWidth(stepName)) / 2;
 				int y1 = ((boxheight - metrics.getHeight()) / 2) + metrics.getAscent();
@@ -129,8 +212,23 @@ public class AgentSimpleFrame extends JPanel {
 		
 		g2.translate(-(width-(boxwidth*strategy.size()+boxwidth))/2, -(150-boxheight)/2);
 	}
-	int sidelen = 500/7;
-	int sidewid = 500/7;
+	
+	private int stepInBlock(int step)
+	{
+		if(step == 0)
+		{
+			return a.getProgram().get(0);
+		}
+		int progIndex=0;
+		int index=0;
+		while(step > index)
+		{
+			index += a.getBlocks().get(a.getProgram().get(progIndex)).size();
+			progIndex++;
+		}
+		return a.getProgram().get(progIndex-1);
+	}
+	
 	private void drawCurrentView(Graphics2D g2)
 	{
 		//Draw current phenotype
@@ -143,7 +241,7 @@ public class AgentSimpleFrame extends JPanel {
 		
 		for(int n=0; n<ns; n++)
 		{
-			int yoff = (height-150-20-sidelen);
+			int yoff = (height-350-20-sidelen);
 			int incr = (width-40)/(ns+1);
 			int xoff = 20 + ((n+1)*incr) - sidewid/2;
 			drawPhenotypeBox(g2, neighbors.get(n), xoff, yoff);

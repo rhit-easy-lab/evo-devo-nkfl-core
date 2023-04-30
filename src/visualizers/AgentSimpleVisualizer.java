@@ -26,27 +26,33 @@ public class AgentSimpleVisualizer {
 	
 	public static FitnessFunction buildFitnessFunction()
 	{
-		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 5, 2);
+		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 7, 5);
 		return f;
 	}
 	
 	public static Phenotype buildStartingPhenotype()
 	{
-		int[] startLoc = {0, 0, 0, 0, 0};
+		int[] startLoc = {0, 0, 0, 0, 0, 0, 1};
 		Bitstring b = new Bitstring(startLoc);
 		
 		return b;
 	}
 	
-	public static List<Step> buildStartingProgram()
+	public static List<Step> buildStartingStrategy()
 	{
 		List<Step> simpleProgram = new ArrayList<Step>();
-		simpleProgram.add(Step.RandomWalk);
+
+		simpleProgram.add(Step.SteepestClimb);
+		simpleProgram.add(Step.SteepestClimb);
+		simpleProgram.add(Step.SteepestClimb);
+		simpleProgram.add(Step.SteepestClimb);
+		simpleProgram.add(Step.SteepestClimb);
+		simpleProgram.add(Step.SteepestClimb);
 		simpleProgram.add(Step.SteepestClimb);
 		simpleProgram.add(Step.RandomWalk);
 		simpleProgram.add(Step.SteepestClimb);
-		simpleProgram.add(Step.SteepestFall);
-		simpleProgram.add(Step.SteepestFall);
+		simpleProgram.add(Step.SteepestClimb);
+
 		return simpleProgram;
 	}
 	
@@ -58,11 +64,9 @@ public class AgentSimpleVisualizer {
 		parentPanel.setLayout(new BorderLayout(3, 3));
 		
 		FitnessFunction f = buildFitnessFunction();
-		N3LandscapeFrame landscape = new N3LandscapeFrame(f, 500, 20, 20);
 		
-		AgentSimple agent = new AgentSimple(f, buildStartingPhenotype(), buildStartingProgram());
-		landscape.addAgentSimple(agent);
-		AgentSimpleFrame asf = new AgentSimpleFrame(agent, f, 0, 20, 1350, 700);
+		AgentSimple agent = new AgentSimple(f, buildStartingPhenotype(), buildStartingStrategy());
+		AgentSimpleFrame asf = new AgentSimpleFrame(agent, f, 20, 20, 1300, 600);
 		
 		
 		JButton agentActionButton = new JButton("Take Step");
