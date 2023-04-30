@@ -24,20 +24,23 @@ import visualizerComponents.N3LandscapeFrame;
 
 public class AgentSimpleVisualizer {
 	
+	//Modify this method to return whichever FitnessFunction you want to be displayed as an N=3 landscape
 	public static FitnessFunction buildFitnessFunction()
 	{
 		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 7, 5);
 		return f;
 	}
 	
+	//Modify this method to return what you want the starting phenotype to be
 	public static Phenotype buildStartingPhenotype()
 	{
-		int[] startLoc = {0, 0, 0, 0, 0, 0, 1};
+		int[] startLoc = {0, 0, 0, 0, 0, 0, 0};
 		Bitstring b = new Bitstring(startLoc);
 		
 		return b;
 	}
 	
+	//Modify this method to return whatever you want the starting strategy to be
 	public static List<Step> buildStartingStrategy()
 	{
 		List<Step> simpleProgram = new ArrayList<Step>();
@@ -45,8 +48,8 @@ public class AgentSimpleVisualizer {
 		simpleProgram.add(Step.SteepestClimb);
 		simpleProgram.add(Step.SteepestClimb);
 		simpleProgram.add(Step.SteepestClimb);
-		simpleProgram.add(Step.SteepestClimb);
-		simpleProgram.add(Step.SteepestClimb);
+		simpleProgram.add(Step.SteepestFall);
+		simpleProgram.add(Step.RandomWalk);
 		simpleProgram.add(Step.SteepestClimb);
 		simpleProgram.add(Step.SteepestClimb);
 		simpleProgram.add(Step.RandomWalk);

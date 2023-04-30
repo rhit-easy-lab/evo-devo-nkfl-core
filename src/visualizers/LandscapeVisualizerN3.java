@@ -9,13 +9,17 @@ import javax.swing.JFrame;
 import control.SeededRandom;
 import landscape.FitnessFunction;
 import landscape.NKLandscape;
+import landscape.NumOnes;
 import visualizerComponents.N3LandscapeFrame;
 
 
 public class LandscapeVisualizerN3 {
 	
+	//Modify this method to return whichever FitnessFunction you want to be displayed as an N=3 landscape
 	public static FitnessFunction buildFitnessFunction()
 	{
+//		FitnessFunction f = new NumOnes();
+		
 		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 3, 0);
 		return f;
 	}

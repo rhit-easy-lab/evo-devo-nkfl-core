@@ -24,12 +24,14 @@ import visualizerComponents.N3LandscapeFrame;
 
 public class LandscapeAgentVisualizerN3 {
 	
+	//Modify this method to return whichever FitnessFunction you want to be displayed as an N=3 landscape
 	public static FitnessFunction buildFitnessFunction()
 	{
 		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 3, 2);
 		return f;
 	}
 	
+	//Modify this method to change where the agent starts on the N=3 landscape. Note: you will have to keep the bitstring length 3 bits long
 	public static Phenotype buildStartingPhenotype()
 	{
 		int[] startLoc = {0, 0, 0};
@@ -38,16 +40,18 @@ public class LandscapeAgentVisualizerN3 {
 		return b;
 	}
 	
+	//Modify this method to change what steps the agent takes over its lifetime, by adding them to the list.
+	//Try to keep these strategies less than 7 steps for the visualizer's sake.
 	public static List<Step> buildStartingStrategy()
 	{
-		List<Step> simpleProgram = new ArrayList<Step>();
-		simpleProgram.add(Step.RandomWalk);
-		simpleProgram.add(Step.SteepestClimb);
-		simpleProgram.add(Step.RandomWalk);
-		simpleProgram.add(Step.SteepestClimb);
-		simpleProgram.add(Step.SteepestFall);
-		simpleProgram.add(Step.SteepestFall);
-		return simpleProgram;
+		List<Step> simpleStrategy = new ArrayList<Step>();
+		simpleStrategy.add(Step.RandomWalk);
+		simpleStrategy.add(Step.SteepestClimb);
+		simpleStrategy.add(Step.RandomWalk);
+		simpleStrategy.add(Step.SteepestClimb);
+		simpleStrategy.add(Step.SteepestFall);
+		simpleStrategy.add(Step.SteepestFall);
+		return simpleStrategy;
 	}
 	
 	public static void main(String[] args) throws IOException 

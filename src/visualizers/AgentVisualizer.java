@@ -26,6 +26,7 @@ import visualizerComponents.N3LandscapeFrame;
 
 public class AgentVisualizer {
 	
+	//Modify this method to return whichever FitnessFunction you want to be displayed as an N=3 landscape
 	public static FitnessFunction buildFitnessFunction()
 	{
 		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 7, 5);
