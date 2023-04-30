@@ -22,17 +22,17 @@ import visualizerComponents.AgentSimpleFrame;
 import visualizerComponents.N3LandscapeFrame;
 
 
-public class LandscapeAgentVisualizerN3 {
+public class AgentSimpleVisualizer {
 	
 	public static FitnessFunction buildFitnessFunction()
 	{
-		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 3, 2);
+		FitnessFunction f = new NKLandscape(SeededRandom.getInstance().nextInt(), 5, 2);
 		return f;
 	}
 	
 	public static Phenotype buildStartingPhenotype()
 	{
-		int[] startLoc = {0, 0, 0};
+		int[] startLoc = {0, 0, 0, 0, 0};
 		Bitstring b = new Bitstring(startLoc);
 		
 		return b;
@@ -62,7 +62,7 @@ public class LandscapeAgentVisualizerN3 {
 		
 		AgentSimple agent = new AgentSimple(f, buildStartingPhenotype(), buildStartingProgram());
 		landscape.addAgentSimple(agent);
-		AgentSimpleFrame asf = new AgentSimpleFrame(agent, f, 0, 20);
+		AgentSimpleFrame asf = new AgentSimpleFrame(agent, f, 0, 20, 1350, 700);
 		
 		
 		JButton agentActionButton = new JButton("Take Step");
@@ -81,8 +81,7 @@ public class LandscapeAgentVisualizerN3 {
 		agentActionButton.addActionListener(agentActionListener);
 		frame.add(agentActionButton, BorderLayout.SOUTH);
 		
-		frame.add(landscape, BorderLayout.WEST);
-		frame.add(asf, BorderLayout.EAST);
+		frame.add(asf, BorderLayout.CENTER);
 		
 		frame.setBounds(100, 100, 1350, 700);
         frame.setVisible(true);

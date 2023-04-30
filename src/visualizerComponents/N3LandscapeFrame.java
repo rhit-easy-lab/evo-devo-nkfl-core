@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import agent.Agent;
 import agent.AgentSimple;
 import agent.Bitstring;
 import landscape.FitnessFunction;
@@ -48,10 +49,12 @@ public class N3LandscapeFrame extends JPanel {
 		this.setPreferredSize(new Dimension(drawSize+xloc, drawSize+yloc));
 	}
 	
+	Agent a = null;
 	AgentSimple as = null;
 	public void addAgentSimple(AgentSimple as)
 	{
 		this.as = as;
+		a = null;
 	}
 	
 	@Override

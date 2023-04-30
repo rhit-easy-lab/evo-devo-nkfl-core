@@ -1,6 +1,7 @@
 package visualizerComponents;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -25,15 +26,27 @@ public class AgentSimpleFrame extends JPanel {
 	int yloc;
 	AgentSimple a;
 	Font f = new Font("TimesRoman", Font.PLAIN, 13);
-	
+	FitnessFunction fitFun;
 	int width = 750;
 	int height = 500;
 	
-	public AgentSimpleFrame(AgentSimple a, int xloc, int yloc)
+	public AgentSimpleFrame(AgentSimple a, FitnessFunction fitFun, int xloc, int yloc)
 	{
 		this.a=a;
 		this.xloc=xloc;
 		this.yloc=yloc;
+		this.fitFun = fitFun;
+		this.setPreferredSize(new Dimension(width+20, height));
+	}
+	
+	public AgentSimpleFrame(AgentSimple a, FitnessFunction fitFun, int xloc, int yloc, int width, int height)
+	{
+		this.a=a;
+		this.xloc=xloc;
+		this.yloc=yloc;
+		this.fitFun = fitFun;
+		this.width = width;
+		this.height = height;
 		this.setPreferredSize(new Dimension(width+20, height));
 	}
 	
@@ -68,7 +81,7 @@ public class AgentSimpleFrame extends JPanel {
 		int boxwidth = 100;
 		int boxheight = 30;
 		
-		if((700-(boxwidth*strategy.size())) < 0)
+		if((width-(boxwidth*strategy.size())) < 0)
 		{
 			System.out.println("Strategy too long to visualize, please use <=10 steps");
 		}
@@ -115,10 +128,27 @@ public class AgentSimpleFrame extends JPanel {
 		
 		g2.translate(-(width-(boxwidth*strategy.size()+boxwidth))/2, -(150-boxheight)/2);
 	}
-	
+	int sidelen = 500/7;
 	private void drawCurrentView(Graphics2D g2)
 	{
+		//Draw current phenotype
+		g2.setColor(Color.RED);
+		drawPhenotypeBox(g2, a.phenotype, 750/2-(sidelen/2), 20);
+		g2.setColor(Color.BLACK);
 		
+		List<Phenotype> neighbors = a.phenotype.getNeighbors();
+		int ns = neighbors.size();
+		
+		for(int n=0; n<ns; n++)
+		{
+			int yoff = (350-20-sidelen);
+			int incr = (750-40)/(ns+1);
+			int xoff = 20 + ((n+1)*incr) - sidelen/2;
+			drawPhenotypeBox(g2, neighbors.get(n), xoff, yoff);
+//			g2.setColor(Color.RED);
+			g2.drawLine(750/2, 20+sidelen, xoff+sidelen/2, yoff);
+//			g2.setColor(Color.BLACK);
+		}
 	}
 	
 	private int[] bitstringFromInt(int input)
@@ -145,5 +175,27 @@ public class AgentSimpleFrame extends JPanel {
 			System.out.println("Error in 2^n decomp");
 		}
 		return thisString;
+	}
+	
+	public void drawPhenotypeBox(Graphics2D g2, Phenotype phenotype, int xoffset, int yoffset)
+	{
+		g2.translate(xoffset, yoffset);
+		
+		
+		
+		FontMetrics metrics = g2.getFontMetrics(f);
+		String boxName = phenotype.toString();
+
+		g2.drawRect(0, 0, sidelen, sidelen);
+		g2.setColor(Color.BLACK);
+		int x1 = (sidelen - metrics.stringWidth(boxName)) / 2;
+		int y1 = ((sidelen - metrics.getHeight()) / 2) + metrics.getAscent() - metrics.getAscent();
+		String boxFit = "fit:"+Math.round(fitFun.getFitness(phenotype)*1000.0)/1000.0+"000000";
+		boxFit = boxFit.substring(0,9);
+		int x2 = (sidelen - metrics.stringWidth(boxFit)) / 2;
+		int y2 = ((sidelen - metrics.getHeight()) / 2) + metrics.getAscent() + metrics.getAscent();
+		g2.drawString(boxName, x1, y1);
+		g2.drawString(boxFit, x2, y2);		
+		g2.translate(-xoffset, -yoffset);
 	}
 }
