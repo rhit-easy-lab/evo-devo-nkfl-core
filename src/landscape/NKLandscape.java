@@ -19,14 +19,7 @@ public class NKLandscape implements FitnessFunction {
 	 * @param seed for the landscape
 	 */
 	public NKLandscape(int seed) {
-		this.landscapeSeed = seed;
-		this.landscapeRnd = new Random(landscapeSeed);
-		this.n = Constants.N;
-		this.k = Constants.K;
-		
-		double[][] interactionTable = generateRandomInteractionTable();
-		generateFitnessTable(interactionTable); // this has no return value because it stores its data in the landscape
-												// globals
+		this(seed,Constants.N,Constants.K);										// globals
 	}
 	
 	/**
