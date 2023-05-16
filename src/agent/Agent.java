@@ -114,6 +114,8 @@ public class Agent implements Comparable<Agent> {
 		switch(Constants.PHENOTYPE_TYPE.toLowerCase()) {
 			case "nkphenotype":
 				return new NKPhenotype();
+			case "nkphenotypefast":
+				return new NKPhenotypeFast();
 			default:
 				System.out.println("PHENOTYPE_TYPE not recognized");
 				return null;
@@ -227,11 +229,14 @@ public class Agent implements Comparable<Agent> {
 				}
 			}
 			//Now store the average fitness at each step in the pastFitnesses list
+			double initialFitness = fitnessHistory.get(0);
 			fitnessHistory.clear();
+			fitnessHistory.add(initialFitness);
 			for(int stepIndex = 0; stepIndex < strategy.size(); stepIndex++)
 			{
 				fitnessHistory.add(summedFitnesses[stepIndex] / (double) Constants.STRATEGY_SAMPLE_SIZE);
 			}
+			fitness = fitnessHistory.get(fitnessHistory.size()-1);
 		}
 	}
 	

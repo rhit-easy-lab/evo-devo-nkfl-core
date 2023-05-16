@@ -20,6 +20,7 @@ public class ExperimentRunner {
 		//If no configuration file is specified, it runs using defaultConfig.properties
 		if(args.length>=1)
 		{
+			System.out.println("Using the configuration file: " + args[0]);
 			PropParser.load(args[0]);
 		}
 		else
