@@ -1,6 +1,7 @@
 package control;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,7 +36,18 @@ public class ExperimentWriter {
 	 * @throws IOException
 	 */
 	public ExperimentWriter(String filename, String[] params) throws IOException {
-		this(new FileWriter("output/" + rename(filename)),params);
+		this(new FileWriter(outputFile(filename)),params);
+	}
+	
+	/**
+	 * Converts a given filename to a file and creates any necessary directories
+	 * @param filename
+	 * @return output file
+	 */
+	public static File outputFile(String filename) {
+		File file = new File("output/" + rename(filename));
+		file.getParentFile().mkdirs();
+		return file;
 	}
 	
 	/**
