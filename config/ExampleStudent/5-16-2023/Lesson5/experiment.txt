@@ -1,0 +1,4 @@
+This experiment runs the simulator on an N=5, K=20 landscape, evolving only the developmental program over 100 generations
+
+The goal of this experiment is to run a basic evolutionary loop on a fairly simple landscape to show
+expected performance when the phenotype (initial bitstring) is not evolved

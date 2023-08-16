@@ -7,14 +7,20 @@ import javax.naming.OperationNotSupportedException;
 @SuppressWarnings("serial")
 public class SeededRandom extends Random {
 	protected static SeededRandom thisSingle = null;
+	private long seed;
 	
 	protected SeededRandom(long seed)
 	{
 		//If the seed is -1, that means we want a random seed
 		if(seed != -1)
 		{			
-			this.setSeed(seed);
+			this.seed = seed;
 		}
+		else
+		{
+			this.seed = this.nextLong();
+		}
+		this.setSeed(seed);
 	}
 	
 	public static SeededRandom getInstance() {
@@ -47,5 +53,10 @@ public class SeededRandom extends Random {
 		{
 			throw new OperationNotSupportedException();
 		}
+	}
+	
+	public long getSeed()
+	{
+		return seed;
 	}
 }

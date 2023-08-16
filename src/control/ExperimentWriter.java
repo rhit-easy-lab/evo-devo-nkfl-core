@@ -19,6 +19,7 @@ public class ExperimentWriter {
 	private int simulationNum = 0;
 	private StringBuilder line;
 	private List<String> params;
+	private String filename;
 	
 	public ExperimentWriter() throws IOException {
 		this(Constants.FILENAME,Constants.WRITER_PARAMS);
@@ -34,7 +35,7 @@ public class ExperimentWriter {
 	 * @throws IOException
 	 */
 	public ExperimentWriter(String filename, String[] params) throws IOException {
-		this(new FileWriter(rename(filename)),params);
+		this(new FileWriter("output/" + rename(filename)),params);
 	}
 	
 	/**
@@ -44,7 +45,7 @@ public class ExperimentWriter {
 	 */
 	public static String rename(String filename) {
 		if(filename.contains("RENAME")) {
-			filename = ""+SeededRandom.getInstance().nextInt();
+			filename = ""+SeededRandom.getInstance().getSeed();
 		}
 		if(!filename.endsWith(".csv")) {
 			filename = filename+".csv";
@@ -209,18 +210,21 @@ public class ExperimentWriter {
 			}
 			if(params.contains("program")) {
 				StringBuilder sb = new StringBuilder();
+				if(Constants.PROGRAM_LENGTH > 0)
+				{
 				for(Integer block : agent.getProgram()) {
 					sb.append(block);
 					sb.append(",");
 				}
 				sb.deleteCharAt(sb.length()-1); // remove extra comma
+				}
 				line.append(toCSVDelimited(sb.toString()));
 			}
 			if(params.contains("strategy")) {
 				line.append(toCSVDelimited(agent.getStrategy().toString()));
 			}
 			if(params.contains("final fitness")) {
-				line.append(agent.getFinalFitness()+',');
+				line.append(""+agent.getFinalFitness()+',');
 			}
 			if(params.contains("fitnesses")) {
 				line.append(toCSVDelimited(agent.getFitnessHistory().toString()));
@@ -252,5 +256,9 @@ public class ExperimentWriter {
 	
 	public void closePrintWriter() {
 		out.close();
+	}
+	
+	public String getFileName() {
+		return filename;
 	}
 }

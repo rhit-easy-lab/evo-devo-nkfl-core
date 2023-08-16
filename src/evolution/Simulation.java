@@ -70,6 +70,11 @@ public class Simulation {
 		runSimulation(Constants.NUM_GENERATIONS);
 	}
 	
+	/**
+	 * Runs an evolutionar loop for numGenerations
+	 * 
+	 * @param numGenerations number of generations in evolutionary loop
+	 */
 	public void runSimulation(int numGenerations)
 	{
 		for(int generationNumber = 1; generationNumber < numGenerations+1; generationNumber++)

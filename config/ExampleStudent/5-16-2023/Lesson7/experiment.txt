@@ -1,0 +1,2 @@
+This experiment is designed to run the same experiment using different selection types (truncation, tournament 2, tournament 3) to see how the selection
+type impacts the performance of the evolutionary loop
