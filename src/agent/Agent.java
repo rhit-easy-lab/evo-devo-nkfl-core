@@ -44,6 +44,8 @@ public class Agent implements Comparable<Agent> {
 	private double fitness;
 	//fitnessHistory is indexed the same as phenotypeHistory
 	private List<Double> fitnessHistory;
+	private List<Step> stepList = new ArrayList<Step>();
+	private List<String> stringList = new ArrayList<String>();
 	
 	/**
 	 * Default constructor for Agent. Creates an agent with a random initial phenotype,
@@ -69,15 +71,28 @@ public class Agent implements Comparable<Agent> {
 		for(int block=0; block < Constants.NUMBER_OF_BLOCKS; block++)
 		{
 			List<Step> thisBlock = new ArrayList<Step>();
-			for(int stepIndex=0; stepIndex < Constants.BLOCK_LENGTH; stepIndex++)
+			//Experiment, remove if needed***
+			thisBlock.add(Step.SteepestClimb);
+			for(int stepIndex=1; stepIndex < Constants.BLOCK_LENGTH; stepIndex++)
 			{
-				thisBlock.add(Step.randomStep());
+				thisBlock.add(Step.SameStep);
 			}
 			blocks.add(thisBlock);
+			
+			
+//			for(int stepIndex=0; stepIndex < Constants.BLOCK_LENGTH; stepIndex++)
+//			{
+//				thisBlock.add(Step.randomStep());
+//			}
+//			blocks.add(thisBlock);
 		}
 		//Compile the program and blocks into the strategy
 		this.compileStrategyAndInitializeHistory();
 	}
+	
+	
+	
+	
 	
 	/**
 	 * Constructor for Agent. Creates an agent with a given initial phenotype,
@@ -173,6 +188,9 @@ public class Agent implements Comparable<Agent> {
 				break;
 			case SteepestFall:
 				steepestFall();
+				break;
+			case SameStep:
+				sameStep();
 				break;
 		}
 		
@@ -380,6 +398,40 @@ public class Agent implements Comparable<Agent> {
 		phenotype = bestLocation;
 	}
 	
+	private void sameStep()
+	{
+		Step same = strategy.get(currentStep - 2);
+		stepList.add(same);
+		if(same.toString() == "SameStep") {
+			String last = stringList.get(stringList.size() - 1);
+			if(last == "SteepestClimb") {
+				steepestClimb();
+				stringList.add("SteepestClimb");
+			}
+			if(last == "SteepestFall") {
+				steepestFall();
+				stringList.add("SteepestFall");
+			}
+			if(last == "RandomWalk") {
+				randomWalk();
+				stringList.add("RandomWalk");
+			}
+		}else {
+	
+		if(same.toString() == "SteepestClimb") {
+			steepestClimb();
+			stringList.add("SteepestClimb");
+		}
+		if(same.toString() == "SteepestFall") {
+			steepestFall();
+			stringList.add("SteepestFall");
+		}
+		if(same.toString() == "RandomWalk") {
+			randomWalk();
+			stringList.add("RandomWalk");
+		}
+		}
+	}
 	/**
 	 * Chooses the lowest fitness neighbor to be the new phenotype
 	 */
@@ -435,7 +487,12 @@ public class Agent implements Comparable<Agent> {
 			return -1;
 		}
 	}
-	
+	public double getFitness() {
+		return fitness;
+	}
+	public Phenotype getPheno() {
+		return phenotype;
+	}
 	/**
 	 * Returns the phenotype of the agent if it is developed, otherwise it prints an error and returns null.
 	 * @return
