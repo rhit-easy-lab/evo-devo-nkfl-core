@@ -11,6 +11,7 @@ import javax.naming.OperationNotSupportedException;
 import org.junit.jupiter.api.Test;
 
 import agent.Agent;
+import agent.ExaptPhenotype;
 import agent.NKPhenotype;
 import agent.Phenotype;
 import agent.Step;
@@ -39,6 +40,14 @@ class AgentTest {
 		int[] bitstr = {0, 1, 0, 1};
 		
 		NKPhenotype testPhenotype = new NKPhenotype(bitstr);
+		//ExaptPhenotype Tests
+		ExaptPhenotype exap = new ExaptPhenotype(1, 2, null);
+		System.out.print(exap.getNumber());
+		if(ExaptPhenotype.getFirst(10, 2, 5, 3, 5).getNeighbors().get(0) == null) {
+			System.out.print("null");
+		}
+		//System.out.print(ExaptPhenotype.getFirst(10, 2, 5, 3, 5).getNeighbors().get(0).toString());
+		//End ExaptPhenotype Tests
 		FitnessFunction fitFunction = new NumOnes();
 		List<Integer> testProg = new ArrayList<Integer>();
 		testProg.add(0);
@@ -47,6 +56,7 @@ class AgentTest {
 		List<List<Step>> testBlocks = new ArrayList<List<Step>>(); 
 		List<Step> b1 = new ArrayList<Step>();
 		b1.add(Step.SteepestClimb);
+		//b1.add(Step.SameStep);
 		b1.add(Step.SteepestClimb);
 		List<Step> b2 = new ArrayList<Step>();
 		b2.add(Step.SteepestFall);
@@ -107,6 +117,7 @@ class AgentTest {
 		List<Step> b1 = new ArrayList<Step>();
 		b1.add(Step.SteepestClimb);
 		b1.add(Step.SteepestClimb);
+	//b1.add(Step.SteepestClimb);
 		List<Step> b2 = new ArrayList<Step>();
 		b2.add(Step.SteepestFall);
 		b2.add(Step.SteepestFall);
