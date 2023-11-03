@@ -27,6 +27,8 @@ public class Constants {
 	public static final double PHENOTYPE_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("phenotypeMutationRate"));
 	public static final double BLOCK_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("blockMutationRate"));
 	public static final double PROGRAM_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("programMutationRate"));
+	//New
+	public static final double BLOCK_COPY_RATE = Double.parseDouble(PropParser.getProperty("blockCopyRate"));
 	
 //	Selection Constants
 	public static final String SELECTION_TYPE = PropParser.getProperty("selectionType");
@@ -37,5 +39,10 @@ public class Constants {
 	public static final String STEPS = PropParser.getProperty("steps");
 	public static final int PROGRAM_LENGTH = Integer.parseInt(PropParser.getProperty("programLength"));
 	public static final int BLOCK_LENGTH = Integer.parseInt(PropParser.getProperty("blockLength"));
+	//New
+	public static final int UPPER_NUMBER_OF_BLOCKS = Integer.parseInt(PropParser.getProperty("upperNumberOfBlocks"));
+	public static final double WEIGHT_OF_SAMESTEP = Double.parseDouble(PropParser.getProperty("weightOfSameStep"));
+	//EndNew
+	
 	public static final int NUMBER_OF_BLOCKS = Integer.parseInt(PropParser.getProperty("numberOfBlocks"));
 }
