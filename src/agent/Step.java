@@ -42,6 +42,42 @@ public enum Step {
 	 * Utility function to get a random element of the validSteps list.
 	 */
 	public static Step randomStep() {
+		//BeginOriginal
+//		return validSteps.get(SeededRandom.getInstance().nextInt(validSteps.size()));
+		//EndOriginal
+		
+		//Should make choosing SameStep more likely. If SameStep is not in the list of valid steps, will do the same thing as original.
+		int placeHolder = 0;
+		int sameStepLocation = 0;
+		// Checks for SameStep
+		for(int k = 0; k < validSteps.size(); k++) {
+			if(validSteps.get(k) == Step.SameStep) {
+				sameStepLocation = k;
+				placeHolder++;
+			}
+		}
+		//If SameStep is in the list, picks a random number between 0 and 1 on the uniform distribution. If that number is less than the input likelyhood for samestep, it returns SameStep. 
+		// If not, it randomly chooses a step that is not SameStep and returns that. 
+		if(placeHolder != 0) {
+			double chooser = Math.random();
+			if(chooser < Constants.WEIGHT_OF_SAMESTEP) {
+				System.out.print("!SameStep Returned!");
+				return Step.SameStep;
+				}else {
+					int nextChoice = 0;
+					while(true) {
+						nextChoice = SeededRandom.getInstance().nextInt(validSteps.size());
+						if(nextChoice != sameStepLocation) {
+							System.out.print("?Otherstep?");
+							break;
+						}
+					}
+					return validSteps.get(nextChoice);
+					
+				}
+		}else {
+			//If samestep is not in the list, it returns a random number from the list.
 		return validSteps.get(SeededRandom.getInstance().nextInt(validSteps.size()));
+		}
 	}
 }
