@@ -12,55 +12,70 @@ public class ExaptPhenotype extends Phenotype{
 		this.nodeNumber = nodenumber1;
 		this.fitness = fitness1;
 	}
+	public ExaptPhenotype(ExaptPhenotype pheno) {
+		this.nodeNumber = pheno.getNumber();
+		this.fitness = pheno.getFitness();
+		this.neighbors = pheno.getNeighbors();
+	}
+
 	
 // The mainbranchNumber is the number of nodes that should be on the main branch. 
-//The fitness multiplier is related to the fitness, which is calculated based on the multiplier, the node number, and the branch the node is in.
+//The localmax is the local maximum 
+//The globalmax is the globalmaximum
 //The junction1 is the node number of the place where the downwards branch starts. It is important to note that node numbers start at 0.
 //The downBranchNumber is the number of nodes on the downwards branch
-//The upBranchNumber is the number of nodes on the branch starting at the end of the downwards branch.
+//The upBranchNumber is the number of nodes on the branch starting at the end of the downwards branch. Do not include the last node of the downBranch in this number.
 //The nodeNumbers start at 0, juntion1 is the nodenumber of the first junction.
-public static Phenotype getFirst(int mainbranchNumber, double fitnessMultiplier, int junction1, int downBranchNumber, int upBranchNumber) {
+	
+	//The multipliers on the fitness are incorrect as of now for testing purposes on the down and up branches
+public static Phenotype getFirst(int mainbranchNumber, double localMax, double globalMax, int junction1, int localMin, int downBranchNumber, int upBranchNumber) {
 	List<Phenotype> mainBranch = new ArrayList<Phenotype>();
 	List<ArrayList<Phenotype>> edges = new ArrayList<ArrayList<Phenotype>>();
-	
+	double stepSize1 = localMax/(mainbranchNumber - 1);
+	//Makes the main Branch
 	for(int k = 0; k < mainbranchNumber; k++) {
 		List<Phenotype> neighbors = new ArrayList<Phenotype>();
-		mainBranch.add(new ExaptPhenotype(k, fitnessMultiplier*k, neighbors));
+		mainBranch.add(new ExaptPhenotype(k, stepSize1*k, neighbors));
+//Tests begin
+		//		if( k== mainbranchNumber - 1) {
+//		//	System.out.print("g" +  k*stepSize1 + "g");
+//		}
+		//Tests end
 	}
 	//Finds the junction
 	int junctionA = junction1;
-//	if(mainbranchNumber%2 == 0) {
-//		junctionA = mainbranchNumber/2;
-//	}else {
-//		junctionA = ((mainbranchNumber - 1)/2) + 1;
-//	}
 	//Makes the downwards branch
-	
-	for(int h = 0; h < downBranchNumber; h++) {
+	double stepSize2 = (junctionA*stepSize1 - localMin)/downBranchNumber;
+	for(int h = 1; h < downBranchNumber + 1; h++) {
 		List<Phenotype> neighbors2 = new ArrayList<Phenotype>();
-		mainBranch.add(new ExaptPhenotype(mainbranchNumber + h, (junctionA - h)*fitnessMultiplier, neighbors2));
+		//2*h as a test
+		double ytb = (stepSize1*junctionA- h*stepSize2);
+		mainBranch.add(new ExaptPhenotype(mainbranchNumber + h, ytb, neighbors2));
+			//Tests Begin
+		//		if(h == downBranchNumber) {
+//		//	System.out.print("u" + (stepSize1*junctionA- h*stepSize2) + "u");
+//		}
+		//Tests End
 	}
-	//Testing
-	System.out.print("Start" + mainBranch.get(0).getNeighbors().size() + "END");
-	if(mainBranch.get(0).getNeighbors().size() == 0) {
-		System.out.print(")");
-	}
-	for(int z = 0; z < mainBranch.get(0).getNeighbors().size(); z++) {
-		if(mainBranch.get(0).getNeighbors().get(z) == null) {
-			System.out.print("NUll");
-		}
-		System.out.print("A");
-		System.out.print(mainBranch.get(0).getNeighbors().get(z));
-	}
-	//Testing
-	double firstFitness = (junctionA - (downBranchNumber - 1))*fitnessMultiplier;
-	for(int m = 1; m < upBranchNumber; m++) {
+//
+//	double firstFitness = junctionA*stepSize1 - (downBranchNumber)*stepSize2;
+	double stepSize3 = (globalMax - localMin)/(upBranchNumber);
+//Tests Begin
+//	System.out.print("!" + stepSize2 + "!");
+//	System.out.print("?" + localMin + "?");
+//	System.out.print("..." + upBranchNumber + "...");
+//Tests End
+	//Makes upwards Branch
+	//upBranchNumber or upBranchNumber + 1?
+	for(int m = 1; m < upBranchNumber + 1; m++) {
 		List<Phenotype> neighbors3 = new ArrayList<Phenotype>();
-		if(fitnessMultiplier > 1) {
-			mainBranch.add(new ExaptPhenotype((mainBranch.size() - 1) + m, firstFitness + (m)*fitnessMultiplier*fitnessMultiplier, neighbors3));
-		}else {
-			mainBranch.add(new ExaptPhenotype((mainBranch.size() - 1) + m, firstFitness + (m)*2*fitnessMultiplier, neighbors3));
-		}
+		double yta = localMin + (m)*stepSize3;
+		mainBranch.add(new ExaptPhenotype((mainBranch.size() - 1) + m, yta, neighbors3));
+		//Tests Begin
+//		if(m == upBranchNumber) {
+//			System.out.print("w" + yta + "w");
+//		}
+		//Tests End
 	}
 	mainBranch.get(0).getNeighbors().add(mainBranch.get(1));
 	//Makes the main branch of the graph (above); adds the neighbors (below) (If this doesn't work, possibly make the getNeighbors an arraylist and re-make ExaptPhenotype with the new neighbors?
@@ -119,43 +134,29 @@ public static Phenotype getFirst(int mainbranchNumber, double fitnessMultiplier,
 		}
 		edges.add(placeholder3);
 	}
-	//Testing
-	System.out.print("Start" + mainBranch.get(0).getNeighbors().size() + "END");
-	System.out.print("Start" + mainBranch.get(junctionA).getNeighbors().size() + "END");
-	System.out.print("Edges" + edges.get(junctionA +1).size() +"END");
-	//Testing
+//	//Testing
+//	System.out.print("Start" + mainBranch.get(0).getNeighbors().size() + "END");
+//	System.out.print("Start" + mainBranch.get(junctionA).getNeighbors().size() + "END");
+//	System.out.print("Edges" + edges.get(junctionA +1).size() +"END");
+//	//Testing
+//	for(int c = 0; c < mainBranch.size(); c++) {
+//		if(mainBranch.get(c).getNeighbors().size() == 3) {
+//			System.out.print("+");
+//			mainBranch.get(c).getNeighbors().get(2);
+//		}else {
+//			System.out.print("-");
+//		}
+//	}
+//	System.out.print(mainBranch.size() + "L");
+	//Testing end
 	return mainBranch.get(0);
 	
 }
 	
-	
 
-
-
-//public static void buildGraph(int mainNodeNumber, int branch2NodeNumber, int branch3NodeNumber, int junctionNodeA, int junctionNodeB, int localOptima, int globalOptima) {
-//	ArrayList<int[]>  edgesMain  = new ArrayList<int[]>();
-//	ArrayList<int[]>  edgesBranch2  = new ArrayList<int[]>();
-//	ArrayList<int[]>  edgesBranch3  = new ArrayList<int[]>();
-//	for(int j = 0; j < localOptima; j++) {
-//		int[] a = new int[2];
-//		a[0] = j*(mainNodeNumber/localOptima);
-//		a[1] = (j+1)*(mainNodeNumber/localOptima);
-//		edgesMain.add(a);
-//	}
-//	for(int i = 0; i < (junctionNodeA - junctionNodeB); i++) {
-//		int[] b = new int[2];
-//		b[0] = junctionNodeA - ((junctionNodeA - junctionNodeB)/branch2NodeNumber)*i;
-//		b[1] = junctionNodeA - ((junctionNodeA - junctionNodeB)/branch2NodeNumber)*(i + 1);
-//		edgesBranch2.add(b);
-//	}
-//	for(int k = 0; k < (globalOptima - junctionNodeB); k++) {
-//		int[] c = new int[2];
-//		c[0] = junctionNodeB + (globalOptima - junctionNodeB)*k;
-//		c[1] = junctionNodeB + (globalOptima - junctionNodeB)*(k + 1);
-//		edgesBranch3.add(c);
-//	}
-//}
-
+public double getFitness() {
+	return this.fitness;
+}
 
 @Override
 public List<Phenotype> getNeighbors() {
