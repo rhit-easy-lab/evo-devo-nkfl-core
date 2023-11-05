@@ -28,7 +28,7 @@ public class ExaptPhenotype extends Phenotype{
 //The nodeNumbers start at 0, juntion1 is the nodenumber of the first junction.
 	
 	//The multipliers on the fitness are incorrect as of now for testing purposes on the down and up branches
-public static Phenotype getFirst(int mainbranchNumber, double localMax, double globalMax, int junction1, int localMin, int downBranchNumber, int upBranchNumber) {
+public static Phenotype getFirst(int mainbranchNumber, double localMax, double globalMax, int junctionA, int localMin, int downBranchNumber, int upBranchNumber) {
 	List<Phenotype> mainBranch = new ArrayList<Phenotype>();
 	List<ArrayList<Phenotype>> edges = new ArrayList<ArrayList<Phenotype>>();
 	double stepSize1 = localMax/(mainbranchNumber - 1);
@@ -43,7 +43,6 @@ public static Phenotype getFirst(int mainbranchNumber, double localMax, double g
 		//Tests end
 	}
 	//Finds the junction
-	int junctionA = junction1;
 	//Makes the downwards branch
 	double stepSize2 = (junctionA*stepSize1 - localMin)/downBranchNumber;
 	for(int h = 1; h < downBranchNumber + 1; h++) {
