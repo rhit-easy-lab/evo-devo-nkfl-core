@@ -294,9 +294,9 @@ public class Agent implements Comparable<Agent> {
 		//When adding new steps, create a new step function and enum in Step, and add
 		//it to the switch statement.
 		switch(stepToExecute) {
-			case RandomWalk:
-				randomWalk();
-				break;
+//			case RandomWalk:
+//				randomWalk();
+//				break;
 			case SteepestClimb:
 				steepestClimb();
 				break;
@@ -634,3 +634,7 @@ public class Agent implements Comparable<Agent> {
 		}
 	}
 }
+
+
+
+
