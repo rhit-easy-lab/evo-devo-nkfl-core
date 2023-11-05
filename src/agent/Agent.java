@@ -316,6 +316,27 @@ public class Agent implements Comparable<Agent> {
 		fitnessHistory.add(fitness);
 	}
 	
+	private void steepestClimb()
+	{
+		stringList.add("SteepestClimb");
+		List<Phenotype> locations = phenotype.getNeighbors();
+		locations.add(phenotype);
+		Phenotype bestLocation = locations.get(0);
+		for(Phenotype location : locations)
+		{
+			if(fitnessFunction.getFitness(location) > fitnessFunction.getFitness(bestLocation))
+			{
+				bestLocation = location;
+			}
+		}
+		phenotype = bestLocation;
+	}
+
+
+
+
+
+
 	/**
 	 * Executes the entire developmental strategy
 	 * 
@@ -452,29 +473,7 @@ public class Agent implements Comparable<Agent> {
 				}
 			}
 		}
-		//ADD CHANCE OF COPYING
 		
-		// Takes an input for an upper limit for the number of blocks allowed. Based on the copy rate, will choose blocks and copy them, adding them to the list of blocks, until the upper limit is reached.
-		for(int programIndex=0; programIndex < blocks.size(); programIndex++)
-		{
-			double likelyhood = Math.random();
-			if(likelyhood < Constants.BLOCK_COPY_RATE && program.size()>0)
-			// if(SeededRandom.getInstance().nextDouble() < Constants.BLOCK_COPY_RATE && program.size()>0)
-			{
-				if(blocks.size() < Constants.UPPER_NUMBER_OF_BLOCKS) {
-					blocks.add(blocks.get(programIndex));
-					System.out.print("Block Copied");
-					
-				}
-				//Ensure we don't roll the same block again
-//				int newBlock = SeededRandom.getInstance().nextInt(blocks.size());
-//				if(newBlock >= program.get(programIndex))
-//				{
-//					newBlock = (newBlock + 1) % blocks.size();
-//				}
-//				program.set(programIndex, newBlock);
-			}
-		}
 		//Refresh these values since they may have changed
 		this.compileStrategyAndInitializeHistory();
 	}
@@ -512,35 +511,21 @@ public class Agent implements Comparable<Agent> {
 	 */
 	private void randomWalk()
 	{
+		stringList.add("RandomWalk");
 		List<Phenotype> neighbors = phenotype.getNeighbors();
 		phenotype = neighbors.get(SeededRandom.getInstance().nextInt(neighbors.size()));
 	}
 	
-	/**
-	 * Chooses the highest fitness neighbor to be the new phenotype
-	 */
-	private void steepestClimb()
-	{
-		List<Phenotype> locations = phenotype.getNeighbors();
-		locations.add(phenotype);
-		Phenotype bestLocation = locations.get(0);
-		for(Phenotype location : locations)
-		{
-			if(fitnessFunction.getFitness(location) > fitnessFunction.getFitness(bestLocation))
-			{
-				bestLocation = location;
-			}
-		}
-		phenotype = bestLocation;
-	}
-	
 	private void sameStep()
 	{
+		
 		Step same = strategy.get(currentStep - 1);
 		stepList.add(same);
 		if(same.toString() == "SameStep") {
 			if(stringList.size() < 1) {
-				stringList.add("SteepestClimb");
+				randomWalk();
+				stringList.add("RandomWalk");
+				return;
 			}
 			String last = stringList.get(stringList.size() - 1);
 			if(last == "SteepestClimb") {
@@ -554,7 +539,7 @@ public class Agent implements Comparable<Agent> {
 			if(last == "RandomWalk") {
 				randomWalk();
 				stringList.add("RandomWalk");
-			}
+			} 
 		}else {
 	
 		if(same.toString() == "SteepestClimb") {
@@ -576,6 +561,7 @@ public class Agent implements Comparable<Agent> {
 	 */
 	private void steepestFall()
 	{
+		stringList.add("SteepestFall");
 		List<Phenotype> locations = phenotype.getNeighbors();
 		locations.add(phenotype);
 		Phenotype worstLocation = locations.get(0);
