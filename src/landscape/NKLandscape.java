@@ -131,7 +131,7 @@ public class NKLandscape implements FitnessFunction {
 		double[] scaledTable = new double[table.length];
 		for (int index = 0; index < table.length; index++) {
 			scaledTable[index] = (table[index] - min) / (max - min); // makes all table values 0-1
-			scaledTable[index] = Math.pow(scaledTable[index], 8); // scale
+			scaledTable[index] = Math.pow(scaledTable[index], Constants.FITNESS_POWER); // scale
 		}
 		return scaledTable;
 	}

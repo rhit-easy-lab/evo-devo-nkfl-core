@@ -211,10 +211,16 @@ public class Agent implements Comparable<Agent> {
 			{
 				//Wipe all information and reset agent to initial configuration
 				currentStep = 0;
-				phenotype = phenotypeHistory.get(0);
+				
+				//Enabling inherit position turns this into lemarckian evolution 
+				if(!Constants.INHERIT_POSITION) {
+					phenotype = phenotypeHistory.get(0); 
+					fitness = fitnessHistory.get(0);
+				}
+//				
 				phenotypeHistory.clear();
 				phenotypeHistory.add(phenotype);
-				fitness = fitnessHistory.get(0);
+				
 				fitnessHistory.clear();
 				fitnessHistory.add(fitness);
 				//Run the strategy

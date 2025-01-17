@@ -23,11 +23,11 @@ public class ExperimentRunner {
 			System.out.println("Using the configuration file: " + args[0]);
 			PropParser.load(args[0]);
 		}
-		else
-		{
-			System.out.println("No configuration file specified. Continuing with default paramaters.");
-			PropParser.load(PropParser.defaultFilename);
-		}
+//		else
+//		{
+//			System.out.println("No configuration file specified. Continuing with default paramaters.");
+//			PropParser.load(PropParser.defaultFilename);
+//		}
 		
 		//Set up the .csv writer
 		ExperimentWriter writer = new ExperimentWriter();

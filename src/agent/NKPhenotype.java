@@ -85,6 +85,7 @@ public class NKPhenotype extends Phenotype {
 
 	@Override
 	public void mutate() {
+//		System.out.println("old pheno: " + this.getNKTableIndex());
 		for(int bit=0; bit<bitstring.length; bit++)
 		{
 			if(SeededRandom.getInstance().nextDouble() < Constants.PHENOTYPE_MUTATION_RATE)
@@ -92,6 +93,7 @@ public class NKPhenotype extends Phenotype {
 				bitstring[bit] = (bitstring[bit]+1)%2;
 			}
 		}
+//		System.out.println("new pheno: " + this.getNKTableIndex());
 	}
 	
 	//Method to turn the bitstring into a index, usable by the NKLandscape.

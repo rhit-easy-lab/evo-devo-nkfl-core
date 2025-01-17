@@ -34,14 +34,14 @@ public class PropParser {
 		}
 		
 		//Load the default config
-		try {
-			getDefaultInstance().load( new FileReader(new File(defaultFilename)));
-		} catch (FileNotFoundException e) {
-			System.err.println("Default config file not found.");
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			getDefaultInstance().load( new FileReader(new File(defaultFilename)));
+//		} catch (FileNotFoundException e) {
+//			System.err.println("Default config file not found.");
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	//Singleton for our properties

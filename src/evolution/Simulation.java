@@ -87,6 +87,7 @@ public class Simulation {
 			//make and run the next generation
 			Generation nextGeneration = selectionStrategy.getNextGeneration(generations.get(generations.size()-1));
 			nextGeneration.executeAllStrategies();
+			System.out.println("Gen fitness: " + nextGeneration.getBest().getFinalFitness());
 			generations.add(nextGeneration);
 		}
 	}

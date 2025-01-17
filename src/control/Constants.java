@@ -22,7 +22,7 @@ public class Constants {
 	public static final Boolean SINGLE_START = Boolean.parseBoolean(PropParser.getProperty("singleStart"));
 	 
 //	Evolution Constants
-	public static final int NUM_GENERATIONS = Integer.parseInt(PropParser.getProperty("numGenerations"));
+
 	public static final int GENERATION_SIZE = Integer.parseInt(PropParser.getProperty("generationSize"));
 	public static final double PHENOTYPE_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("phenotypeMutationRate"));
 	public static final double BLOCK_MUTATION_RATE = Double.parseDouble(PropParser.getProperty("blockMutationRate"));
@@ -36,6 +36,27 @@ public class Constants {
 //	Developmental Program Constants
 	public static final String STEPS = PropParser.getProperty("steps");
 	public static final int PROGRAM_LENGTH = Integer.parseInt(PropParser.getProperty("programLength"));
-	public static final int BLOCK_LENGTH = Integer.parseInt(PropParser.getProperty("blockLength"));
 	public static final int NUMBER_OF_BLOCKS = Integer.parseInt(PropParser.getProperty("numberOfBlocks"));
+	
+//	Lemarckian Constants
+	public static final Boolean INHERIT_POSITION = Boolean.parseBoolean(PropParser.getProperty("inheritPosition"));
+	
+	public static final Boolean USE_RATIO = Boolean.parseBoolean(PropParser.getProperty("useRatio"));
+	
+
+	public static String[] parts = PropParser.getProperty("lengthToGens").split(",", 2);
+		
+	public static final int NUM_GENERATIONS = Integer.parseInt(parts[1]);
+
+	public static final int BLOCK_LENGTH = Integer.parseInt(parts[0]);
+	
+	public static final int FITNESS_POWER = Integer.parseInt(PropParser.getProperty("fitnessPower"));
+	
+//	public static final int NUM_GENERATIONS = Integer.parseInt(PropParser.getProperty("numGenerations"));
+//
+//	public static final int BLOCK_LENGTH = Integer.parseInt(PropParser.getProperty("blockLength"));
+		
+	
+	
+	
 }
