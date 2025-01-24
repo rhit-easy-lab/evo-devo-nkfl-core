@@ -47,6 +47,9 @@ public class Simulation {
 			case "tournament":
 				this.selectionStrategy = new SelectionTournament();
 				break;
+			case "ranked":
+				this.selectionStrategy = new SelectionRanked();
+				break;
 			default:
 				System.out.println("SELECTION_TYPE not recognized");
 				this.fitFunction = null;

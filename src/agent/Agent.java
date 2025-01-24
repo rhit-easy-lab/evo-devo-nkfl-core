@@ -276,7 +276,38 @@ public class Agent implements Comparable<Agent> {
 			childBlocks.add(childBlock);
 		}
 		
+		
+		
 		Phenotype childPhenotype = phenotype.getIdenticalCopy();
+		
+		//Use the constructor to make the new agent, and return it
+		return new Agent(fitnessFunction, childPhenotype, childProgram, childBlocks, this);
+	}
+	
+	
+	public Agent crossover(Agent otherAgent)
+	{
+		//We need to make a copy of each list to ensure the object references aren't passed
+		List<Integer> childProgram = new ArrayList<Integer>();
+		for(Integer i : program)
+		{
+			childProgram.add(i);
+		}
+		
+		List<List<Step>> childBlocks = new ArrayList<List<Step>>();
+		for(int block=0; block < blocks.size(); block++)
+		{
+			List<Step> childBlock = new ArrayList<Step>();
+			for(Step s : blocks.get(block))
+			{
+				childBlock.add(s);
+			}
+			childBlocks.add(childBlock);
+		}
+		
+		
+		
+		Phenotype childPhenotype = new NKPhenotype(NKPhenotype.crossover(this.phenotype.getBitstring(), otherAgent.phenotype.getBitstring()));
 		
 		//Use the constructor to make the new agent, and return it
 		return new Agent(fitnessFunction, childPhenotype, childProgram, childBlocks, this);

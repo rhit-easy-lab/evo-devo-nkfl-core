@@ -30,4 +30,6 @@ public abstract class Phenotype {
 	 * Mutates the currently selected phenotype. Used in evolutionary loop
 	 */
 	public abstract void mutate();
+	
+	public abstract int[] getBitstring();
 }

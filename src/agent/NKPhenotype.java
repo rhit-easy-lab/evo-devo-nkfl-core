@@ -149,4 +149,19 @@ public class NKPhenotype extends Phenotype {
 			bitstring[index]=0;
 		}
 	}
+	
+	public static int[] crossover(int[] pA, int[] pB) {
+		int[] newPheno = new int[pA.length];
+		for(int i = 0; i < pA.length; i++) {
+			if(Math.random() < 0.5) {
+				newPheno[i] = pA[i];
+			} else {
+				newPheno[i] = pB[i];
+			}
+		}
+		
+		return newPheno;
+	}
+	
+	
 }
