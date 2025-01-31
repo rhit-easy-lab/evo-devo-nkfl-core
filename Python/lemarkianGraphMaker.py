@@ -58,8 +58,8 @@ plt.figure(figsize=(10, 6))
 k_values = grouped_data['k'].unique()
 
 # Assign colors to each 'k' value
-colors = plt.cm.tab20(range(len(k_values)))  # Use a colormap with distinct colors
-
+norm = plt.Normalize(min(k_values), max(k_values))
+colors = plt.cm.viridis(norm(k_values))
 
 # Plot a line for each 'k' value
 for i, k in enumerate(k_values):
