@@ -146,9 +146,11 @@ public class ExperimentWriter {
 	public void writeSim(Simulation sim, int gen_spacing, boolean requireLast) {
 		List<Generation> gens = sim.getGenerations();
 		simulationNum++;
-		for(int i = 0; i<gens.size(); i+= gen_spacing) {
-			writeGen(gens.get(i),""+i);
-		}
+//		for(int i = 0; i<gens.size(); i+= gen_spacing) {
+//			writeGen(gens.get(i),""+i);
+//		}
+		writeGen(gens.get(gens.size()-1),""+(gens.size()-1));
+		
 		// We want to make sure we always output the final generation
 		if(requireLast&&gens.size()%gen_spacing!=0) {
 			writeGen(gens.get(gens.size()-1),""+(gens.size()-1));
