@@ -62,11 +62,11 @@ public class Agent implements Comparable<Agent> {
 		program = new ArrayList<Integer>();
 		for(int programIndex=0; programIndex < Constants.PROGRAM_LENGTH; programIndex++)
 		{
-			program.add(SeededRandom.getInstance().nextInt(Constants.NUMBER_OF_BLOCKS));
+			program.add(SeededRandom.getInstance().nextInt(Constants.BLOCK_BANK_SIZE));
 		}
 		//Create random blocks
 		blocks = new ArrayList<List<Step>>();
-		for(int block=0; block < Constants.NUMBER_OF_BLOCKS; block++)
+		for(int block=0; block < Constants.BLOCK_BANK_SIZE; block++)
 		{
 			List<Step> thisBlock = new ArrayList<Step>();
 			for(int stepIndex=0; stepIndex < Constants.BLOCK_LENGTH; stepIndex++)
@@ -345,7 +345,7 @@ public class Agent implements Comparable<Agent> {
 				{
 					//Ensure we don't roll the same step again
 					Step currentStep = blocks.get(block).get(blockIndex);
-					List<Step> newSteps = new ArrayList<Step>();
+					List<Step> newSteps = new ArrayList<St ep>();
 					for(Step s : Step.validSteps)
 					{
 						if(!s.equals(currentStep))

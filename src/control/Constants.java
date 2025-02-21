@@ -35,22 +35,32 @@ public class Constants {
 	
 //	Developmental Program Constants
 	public static final String STEPS = PropParser.getProperty("steps");
-	public static final int PROGRAM_LENGTH = Integer.parseInt(PropParser.getProperty("programLength"));
-	public static final int NUMBER_OF_BLOCKS = Integer.parseInt(PropParser.getProperty("numberOfBlocks"));
+//	public static final int PROGRAM_LENGTH = Integer.parseInt(PropParser.getProperty("programLength"));
+	
 	
 //	Lemarckian Constants
 	public static final Boolean INHERIT_POSITION = Boolean.parseBoolean(PropParser.getProperty("inheritPosition"));
 	
 	public static final Boolean USE_RATIO = Boolean.parseBoolean(PropParser.getProperty("useRatio"));
-	
 
 	public static String[] parts = PropParser.getProperty("lengthToGens").split(",", 2);
 		
-	public static final int NUM_GENERATIONS = Integer.parseInt(parts[1]);
-
-	public static final int BLOCK_LENGTH = Integer.parseInt(parts[0]);
+	public static final int NUM_GENERATIONS = Integer.parseInt(PropParser.getProperty("numGenerations"));
+	
+//	public static final int NUM_GENERATIONS = Integer.parseInt("parts[1]");
 	
 	public static final int FITNESS_POWER = Integer.parseInt(PropParser.getProperty("fitnessPower"));
+	
+	public static String[] blockParts = PropParser.getProperty("numberToSize") == null ? null: PropParser.getProperty("numberToSize").split(",", 3);
+	
+	public static final int BLOCK_BANK_SIZE = blockParts == null ? Integer.parseInt(PropParser.getProperty("blockBankSize")) : Integer.parseInt(blockParts[2]);
+	
+
+	
+	public static final int BLOCK_LENGTH = blockParts == null ? Integer.parseInt(PropParser.getProperty("blockLength")) : Integer.parseInt(blockParts[1]);
+	
+	public static final int PROGRAM_LENGTH = blockParts == null ? Integer.parseInt(PropParser.getProperty("programLength")) : Integer.parseInt(blockParts[0]);
+	
 	
 //	public static final int NUM_GENERATIONS = Integer.parseInt(PropParser.getProperty("numGenerations"));
 //
