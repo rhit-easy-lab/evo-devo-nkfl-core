@@ -25,3 +25,4 @@ hs_err_pid*
 
 # data output file
 /output/
+/Python/resultFiles
