@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import agent.Agent;
@@ -89,6 +90,7 @@ public class ExperimentWriter {
 		line.append("Simulation,");
 		line.append("Generation,");
 		line.append("Agent_number,");
+		line.append("Starting phenotype,");
 		if(params.contains("generation size")) {
 			line.append("Generation_size,");
 		}
@@ -146,10 +148,10 @@ public class ExperimentWriter {
 	public void writeSim(Simulation sim, int gen_spacing, boolean requireLast) {
 		List<Generation> gens = sim.getGenerations();
 		simulationNum++;
-//		for(int i = 0; i<gens.size(); i+= gen_spacing) {
-//			writeGen(gens.get(i),""+i);
-//		}
-		writeGen(gens.get(gens.size()-1),""+(gens.size()-1));
+		for(int i = 0; i<gens.size(); i+= gen_spacing) {
+			writeGen(gens.get(i),""+i);
+		}
+//		writeGen(gens.get(gens.size()-1),""+(gens.size()-1));
 		
 		// We want to make sure we always output the final generation
 		if(requireLast&&gens.size()%gen_spacing!=0) {
@@ -202,6 +204,10 @@ public class ExperimentWriter {
 
 			// Agent Number
 			line.append(num+",");
+			
+			//starting location
+			String array = Arrays.toString(agent.getPhenotypeHistory().get(0).getBitstring()).replace(',', ';');
+			line.append( array + ",");
 			
 			if(params.contains("generation size")) {
 				line.append(Constants.GENERATION_SIZE+",");

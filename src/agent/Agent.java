@@ -2,6 +2,7 @@ package agent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import control.Constants;
 import control.SeededRandom;
@@ -22,6 +23,7 @@ import landscape.NKLandscape;
 public class Agent implements Comparable<Agent> {
 	//Fields related to evolutionary past
 	private Agent parent = null;
+	Random random = new Random();
 	
 	//Fields related to developmental strategy
 	private List<Integer> program;
@@ -173,6 +175,12 @@ public class Agent implements Comparable<Agent> {
 				break;
 			case SteepestFall:
 				steepestFall();
+				break;
+			case SteepestDoubleClimb:
+				steepestDoubleClimb();
+				break;
+			case SuperDoubleClimb:
+				superDoubleClimb();
 				break;
 		}
 		
@@ -345,7 +353,7 @@ public class Agent implements Comparable<Agent> {
 				{
 					//Ensure we don't roll the same step again
 					Step currentStep = blocks.get(block).get(blockIndex);
-					List<Step> newSteps = new ArrayList<St ep>();
+					List<Step> newSteps = new ArrayList<Step>();
 					for(Step s : Step.validSteps)
 					{
 						if(!s.equals(currentStep))
@@ -434,6 +442,74 @@ public class Agent implements Comparable<Agent> {
 		}
 		phenotype = worstLocation;
 	}
+	
+	//assuming Phenotype is NkPhenotype, not the fast one
+	//This double climb always moves from current location
+	//we are looking at every possible consecutive pair of bitflips
+	private void steepestDoubleClimb()
+	{
+		int distanceBetweenBits = 1;
+		int[] curBitString = this.phenotype.getBitstring();
+		if(curBitString == null) {
+			throw new IllegalArgumentException("Wrong phenotype type");
+		}
+		
+		int[] bestBitString = curBitString.clone();
+		double bestFitnessScore = 0.0;
+		
+		for(int i = 0; i < curBitString.length - 1; i++) {
+			int[] newBitString = curBitString.clone();
+			newBitString[i] = (newBitString[i]+1)%2;
+			
+			int secondIndex = (i + distanceBetweenBits) % curBitString.length;
+			newBitString[secondIndex] = (newBitString[secondIndex]+1)%2;
+			
+			NKPhenotype newPhenotype = new NKPhenotype(newBitString);
+			double newFitnessScore = fitnessFunction.getFitness(newPhenotype);
+			if(newFitnessScore > bestFitnessScore)
+			{
+				bestBitString = newBitString;
+				bestFitnessScore = newFitnessScore;
+			}
+		}
+		
+		this.phenotype = new NKPhenotype(bestBitString);
+		
+	}
+	
+	private void superDoubleClimb()
+	{
+		int[] curBitString = this.phenotype.getBitstring().clone();
+		if(curBitString == null) {
+			throw new IllegalArgumentException("Wrong phenotype type");
+		}
+		
+		int[] bestBitString = curBitString.clone();
+		double bestFitnessScore = 0.0;
+		for(int d = 1; d < curBitString.length; d++) {
+			
+			for(int i = 0; i < curBitString.length - 1; i++) {
+				int[] newBitString = curBitString.clone();
+				newBitString[i] = (newBitString[i]+1)%2;
+				
+				int secondIndex = (i + d) % curBitString.length;
+				newBitString[secondIndex] = (newBitString[secondIndex]+1)%2;
+				
+				NKPhenotype newPhenotype = new NKPhenotype(newBitString);
+				double newFitnessScore = fitnessFunction.getFitness(newPhenotype);
+				if(newFitnessScore > bestFitnessScore)
+				{
+					bestBitString = newBitString;
+					bestFitnessScore = newFitnessScore;
+				}
+			}
+			
+		}
+		
+		this.phenotype = new NKPhenotype(bestBitString);
+	}
+	
+	
 	//-------------------------------------------------------------------------------------------------------------------
 
 	
