@@ -37,6 +37,7 @@ public class Agent implements Comparable<Agent> {
 	 
 	//Fields related to phenotype.
 	private Phenotype phenotype;
+	private Phenotype initialPhenotype;
 	/* phenotypeHistory is indexed by step number, so phenotypeHistory.get(4)
 	 * would give you the phenotype immediately before step 4 was executed */
 	private List<Phenotype> phenotypeHistory;
@@ -57,6 +58,7 @@ public class Agent implements Comparable<Agent> {
 	{
 		//Switch statement to control which phenotype type is initialized
 		this.phenotype = Agent.getRandomPhenotype();
+		this.initialPhenotype = this.phenotype.getIdenticalCopy();
 		this.fitnessFunction = fitnessFunction;
 		this.fitness = fitnessFunction.getFitness(phenotype); 
 		
@@ -93,6 +95,7 @@ public class Agent implements Comparable<Agent> {
 		
 		//Set our phenotype to the given one. Make a copy so we don't have a ton of agents linked to the same phenotype
 		this.phenotype = p.getIdenticalCopy();
+		this.initialPhenotype = this.phenotype.getIdenticalCopy();
 		this.compileStrategyAndInitializeHistory();
 	}
 	
@@ -103,6 +106,7 @@ public class Agent implements Comparable<Agent> {
 	public Agent(FitnessFunction fitnessFunction, Phenotype phenotype, List<Integer> program, List<List<Step>> blocks, Agent parent)
 	{
 		this.phenotype = phenotype;
+		this.initialPhenotype = this.phenotype.getIdenticalCopy();
 		this.fitnessFunction = fitnessFunction;
 		this.fitness = fitnessFunction.getFitness(phenotype);
 		this.program = program;
@@ -286,7 +290,7 @@ public class Agent implements Comparable<Agent> {
 		
 		
 		
-		Phenotype childPhenotype = phenotype.getIdenticalCopy();
+		Phenotype childPhenotype = initialPhenotype.getIdenticalCopy();
 		
 		//Use the constructor to make the new agent, and return it
 		return new Agent(fitnessFunction, childPhenotype, childProgram, childBlocks, this);
