@@ -319,7 +319,7 @@ public class Agent implements Comparable<Agent> {
 		
 		
 		
-		Phenotype childPhenotype = new NKPhenotype(NKPhenotype.crossover(this.phenotype.getBitstring(), otherAgent.phenotype.getBitstring()));
+		Phenotype childPhenotype = new NKPhenotype(NKPhenotype.crossover(this.initialPhenotype.getBitstring(), otherAgent.initialPhenotype.getBitstring()));
 		
 		//Use the constructor to make the new agent, and return it
 		return new Agent(fitnessFunction, childPhenotype, childProgram, childBlocks, this);
@@ -339,6 +339,7 @@ public class Agent implements Comparable<Agent> {
 		{
 			if(SeededRandom.getInstance().nextDouble() < Constants.PROGRAM_MUTATION_RATE && program.size()>0)
 			{
+				
 				//Ensure we don't roll the same block again
 				int newBlock = SeededRandom.getInstance().nextInt(blocks.size());
 				if(newBlock >= program.get(programIndex))
@@ -355,6 +356,7 @@ public class Agent implements Comparable<Agent> {
 			{
 				if(SeededRandom.getInstance().nextDouble() < Constants.BLOCK_MUTATION_RATE && blocks.size()>0)
 				{
+					
 					//Ensure we don't roll the same step again
 					Step currentStep = blocks.get(block).get(blockIndex);
 					List<Step> newSteps = new ArrayList<Step>();
@@ -567,5 +569,9 @@ public class Agent implements Comparable<Agent> {
 			System.out.println("getFinalFitness called on undeveloped agent");
 			return null;
 		}
+	}
+	
+	public Phenotype getInitialPhenotype() {
+		return this.initialPhenotype;
 	}
 }

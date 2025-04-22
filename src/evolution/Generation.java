@@ -33,7 +33,7 @@ public class Generation {
 			Phenotype p = Agent.getRandomPhenotype();
 			for(int agent=0; agent<Constants.GENERATION_SIZE; agent++)
 			{
-				agents.add(new Agent(f,p));
+				agents.add(new Agent(f,p.getIdenticalCopy()));
 			}
 		}
 		else

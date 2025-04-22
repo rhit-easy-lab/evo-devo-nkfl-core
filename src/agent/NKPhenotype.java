@@ -90,6 +90,7 @@ public class NKPhenotype extends Phenotype {
 		{
 			if(SeededRandom.getInstance().nextDouble() < Constants.PHENOTYPE_MUTATION_RATE)
 			{
+				System.out.println("pheno mutate");
 				bitstring[bit] = (bitstring[bit]+1)%2;
 			}
 		}
@@ -153,7 +154,7 @@ public class NKPhenotype extends Phenotype {
 	public static int[] crossover(int[] pA, int[] pB) {
 		int[] newPheno = new int[pA.length];
 		for(int i = 0; i < pA.length; i++) {
-			if(Math.random() < 0.5) {
+			if(SeededRandom.getInstance().nextDouble() < 0.5) {
 				newPheno[i] = pA[i];
 			} else {
 				newPheno[i] = pB[i];

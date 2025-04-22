@@ -3,6 +3,8 @@ package evolution;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import agent.Agent;
+import agent.NKPhenotype;
 import control.Constants;
 import control.SeededRandom;
 import landscape.FitnessFunction;
@@ -56,6 +58,10 @@ public class Simulation {
 		}
 		
 		Generation initialGeneration = new Generation(fitFunction);
+		
+		if(Constants.SINGLE_START) {
+			checkIfAllInitialPhenoSame(initialGeneration,0);
+		}
 		initialGeneration.executeAllStrategies();
 		generations.add(initialGeneration);
 	}
@@ -74,7 +80,7 @@ public class Simulation {
 	}
 	
 	/**
-	 * Runs an evolutionar loop for numGenerations
+	 * Runs an evolutionary loop for numGenerations
 	 * 
 	 * @param numGenerations number of generations in evolutionary loop
 	 */
@@ -89,12 +95,27 @@ public class Simulation {
 			}
 			//make and run the next generation
 			Generation nextGeneration = selectionStrategy.getNextGeneration(generations.get(generations.size()-1));
+			checkIfAllInitialPhenoSame(nextGeneration, generationNumber);
 			nextGeneration.executeAllStrategies();
 			System.out.println("Gen fitness: " + nextGeneration.getBest().getFinalFitness());
 			generations.add(nextGeneration);
 		}
 	}
 	
+	private void checkIfAllInitialPhenoSame(Generation nextGeneration, int genNum) {
+		int[] n = nextGeneration.getAgents().get(0).getInitialPhenotype().getBitstring();
+		int i = 0;
+		for(Agent a: nextGeneration.getAgents()) {
+			
+			if(!Arrays.equals(n, a.getInitialPhenotype().getBitstring())) {
+				throw new RuntimeException("Non-duplicate inital phenotype found in gen: " + genNum);
+			}
+			i++;
+		}
+			
+		
+	}
+
 	public ArrayList<Generation> getGenerations() {
 		return generations;
 	}
